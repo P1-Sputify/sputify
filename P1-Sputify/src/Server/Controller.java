@@ -7,7 +7,7 @@ import java.net.*;
 import java.io.*;
 
 /**
- * @author mehmedagica
+ * @authors mehmedagica, Sebastian Aspegren
  *
  */
 public class Controller {
