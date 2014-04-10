@@ -7,6 +7,7 @@ package Server;
  * @author mehmedagica
  * 
  * A class representing a song/track. The track had an id, a name, an artist, a length and an album it belongs to.
+ * Added a line to class description
  *
  */
 public class Track {
