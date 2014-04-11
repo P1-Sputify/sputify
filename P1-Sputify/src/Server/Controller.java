@@ -39,9 +39,17 @@ public class Controller {
 		new Controller( 5556, meddelanden );
 	}
 	
-	
+	/**
+	 * A private class representing the connection between the client and the server.
+	 * 
+	 * @author Sebastian Aspegren
+	 *
+	 */
 	private class Connect implements Runnable { 
-		
+		/**
+		 * The run method. It attempts to create a server on the given port
+		 *  then creates a new thread where it attempts to communicate with the client.
+		 */
 		public void run() {
 			ServerSocket serverSocket = null;
 			Socket socket; 
@@ -61,7 +69,7 @@ public class Controller {
 		
 			try {
 				serverSocket.close();
-			} 
+			} 	
 			catch( Exception e ) {} 
 		} 
 	}
