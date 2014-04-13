@@ -20,9 +20,12 @@ public class Controller {
 		this.port = port;
 		this.messages = strCom;
 		
+		System.out.println("Server started");
+		System.out.println("Server waiting for client connections...");
 		//Handles client connection-give me a thread
 		Thread connectThread = new Thread(new Connect()); 
 		connectThread.start();
+		System.out.println("A connect thread created and started...");
 	}
 	
 
@@ -30,13 +33,8 @@ public class Controller {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		String[] meddelanden = { "Veni, vidi, vici", 
-				"Jag kom, jag såg, jag segrade",
-				"Alea iacta est", 
-				"Tärningen är kastad",
-				"Et tu Brute", 
-				"Även du, min käre Brutus" };
-		new Controller( 5556, meddelanden );
+		String[] meddelanden = null;
+		new Controller(5556, meddelanden);
 	}
 	
 	/**
@@ -56,11 +54,14 @@ public class Controller {
 			Thread clientThread;
 		
 			try {
-				serverSocket = new ServerSocket( port );
+				serverSocket = new ServerSocket(port);
+				System.out.println("Server socket created on port " + port);
 				while( true ) {
 					socket = serverSocket.accept(); // Här ska kommunikationen med klienten startas
-					clientThread = new Thread( new TalkToClient( socket ) );
+					System.out.println("Server socket accept client");
+					clientThread = new Thread(new TalkToClient(socket));
 					clientThread.start();
+					System.out.println("A new client thread created and started");
 				}
 			} 
 			catch( IOException e1 ) {
@@ -74,7 +75,7 @@ public class Controller {
 		} 
 	}
 	
-private class TalkToClient implements Runnable { 
+	private class TalkToClient implements Runnable { 
 		
 		private Socket socket;
 	
@@ -83,22 +84,23 @@ private class TalkToClient implements Runnable {
 		}
 	
 		public void run() {
+			
+			final String filePath = "mp3files/";
+			final String fileName = "Heroes of Newerth Sounds - Witch Slayer Voice.mp3";
 	
 			try {
 				
 				//Get/Read the file from hard drive or database
-				//Buffert????
+				
 				
 				//Have to use it to send data to the client
 				ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream()); 
-				
+				System.out.println("Object output stream created");
 				//Here comes code to send the audio file to the client
-				for( int i = 0; i < messages.length; i++ ) { 
-					oos.writeObject( messages[ i ] );
-					oos.flush();
-					Thread.sleep( 3000 );
-				}
-
+				oos.writeObject(DataStorage.loadAudioFile(filePath + fileName));
+				oos.flush();
+				Thread.sleep( 3000 );
+				System.out.println("File sended to the client");
 			} 
 			catch(Exception e1 ) {
 				System.out.println( e1 );

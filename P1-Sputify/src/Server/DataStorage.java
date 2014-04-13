@@ -28,10 +28,11 @@ public class DataStorage {
 	 * Read in audio file
 	 * @param fileName
 	 */
-	public static void loadAudioFile(String fileName) {
+	public static byte[] loadAudioFile(String fileName) {
 		
 		int totalFramesRead = 0;
 		File fileIn = new File(fileName);
+		byte[] audioBytes = null;
 		// somePathName is a pre-existing string whose value was
 		// based on a user selection.
 		try {
@@ -42,28 +43,31 @@ public class DataStorage {
 		    // in that case we may read any amount of bytes
 		    bytesPerFrame = 1;
 		  } 
-//		  // Set an arbitrary buffer size of 1024 frames.
-//		  int numBytes = 1024 * bytesPerFrame; 
-//		  byte[] audioBytes = new byte[numBytes];
-//		  try {
-//		    int numBytesRead = 0;
-//		    int numFramesRead = 0;
-//		    // Try to read numBytes bytes from the file.
-//		    while ((numBytesRead = 
-//		      audioInputStream.read(audioBytes)) != -1) {
-//		      // Calculate the number of frames actually read.
-//		      numFramesRead = numBytesRead / bytesPerFrame;
-//		      totalFramesRead += numFramesRead;
-//		      // Here, do something useful with the audio data that's 
-//		      // now in the audioBytes array...
-//		    }
-//		  } catch (IOException e1) {
-//				System.out.println(e1);
-//		  }
+		  // Set an arbitrary buffer size of 1024 frames.
+		  int numBytes = 1024 * bytesPerFrame; 
+		  audioBytes = new byte[numBytes];
+		  try {
+		    int numBytesRead = 0;
+		    int numFramesRead = 0;
+		    // Try to read numBytes bytes from the file.
+		    while ((numBytesRead = audioInputStream.read(audioBytes)) != -1) {
+		      // Calculate the number of frames actually read.
+		      numFramesRead = numBytesRead / bytesPerFrame;
+		      totalFramesRead += numFramesRead;
+		      // Here, do something useful with the audio data that's 
+		      // now in the audioBytes array...
+		    }
+		    
+		   
+		  
+		  } catch (IOException e1) {
+				System.out.println(e1);
+		  }
 			
 		} catch (IOException | UnsupportedAudioFileException e) {
 			System.out.println(e);
 		}
+		 return audioBytes;
 		
 	}
 
