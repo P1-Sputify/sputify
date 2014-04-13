@@ -8,6 +8,10 @@ package Server;
  * 
  */
 public class DataStorage {
+	
+	public DataStorage() {
+		
+	}
 
 	/**
 	 * A method used to verify the user by comparing the given username and
