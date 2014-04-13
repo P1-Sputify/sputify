@@ -85,8 +85,8 @@ public class Controller {
 	
 		public void run() {
 			
-			final String filePath = "mp3files/";
-			final String fileName = "Heroes of Newerth Sounds - Witch Slayer Voice.mp3";
+			final String filePath = "wavfiles/";
+			final String fileName = "finishhim.wav";
 	
 			try {
 				
@@ -100,7 +100,7 @@ public class Controller {
 				oos.writeObject(DataStorage.loadAudioFile(filePath + fileName));
 				oos.flush();
 				Thread.sleep( 3000 );
-				System.out.println("File sended to the client");
+				System.out.println("File sent to the client");
 			} 
 			catch(Exception e1 ) {
 				System.out.println( e1 );
