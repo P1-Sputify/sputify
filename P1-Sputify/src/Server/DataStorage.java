@@ -3,15 +3,70 @@
  */
 package Server;
 
+import java.io.File;
+import java.io.IOException;
+
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.UnsupportedAudioFileException;
+
 /**
  * @author Sebastian Aspegren
  * 
  */
 public class DataStorage {
 	
+	private String filePath = ("mp3files/");
+	
 	public DataStorage() {
 		
+		loadAudioFile(filePath + "Heroes of Newerth Sounds - Witch Slayer Voice.mp3");
+		
 	}
+	
+	/**
+	 * Read in audio file
+	 * @param fileName
+	 */
+	public static void loadAudioFile(String fileName) {
+		
+		int totalFramesRead = 0;
+		File fileIn = new File(fileName);
+		// somePathName is a pre-existing string whose value was
+		// based on a user selection.
+		try {
+		  AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(fileIn);
+		  int bytesPerFrame = audioInputStream.getFormat().getFrameSize();
+		    if (bytesPerFrame == AudioSystem.NOT_SPECIFIED) {
+		    // some audio formats may have unspecified frame size
+		    // in that case we may read any amount of bytes
+		    bytesPerFrame = 1;
+		  } 
+//		  // Set an arbitrary buffer size of 1024 frames.
+//		  int numBytes = 1024 * bytesPerFrame; 
+//		  byte[] audioBytes = new byte[numBytes];
+//		  try {
+//		    int numBytesRead = 0;
+//		    int numFramesRead = 0;
+//		    // Try to read numBytes bytes from the file.
+//		    while ((numBytesRead = 
+//		      audioInputStream.read(audioBytes)) != -1) {
+//		      // Calculate the number of frames actually read.
+//		      numFramesRead = numBytesRead / bytesPerFrame;
+//		      totalFramesRead += numFramesRead;
+//		      // Here, do something useful with the audio data that's 
+//		      // now in the audioBytes array...
+//		    }
+//		  } catch (IOException e1) {
+//				System.out.println(e1);
+//		  }
+			
+		} catch (IOException | UnsupportedAudioFileException e) {
+			System.out.println(e);
+		}
+		
+	}
+
 
 	/**
 	 * A method used to verify the user by comparing the given username and
