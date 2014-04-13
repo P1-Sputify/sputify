@@ -24,24 +24,26 @@ public class KlientTest {
 						serverPort);
 				ObjectInputStream input = new ObjectInputStream(
 						socket.getInputStream());
-				String message;
+		
+			byte[] sound;
 				while (true) {
-					System.out.println("ClientD: Lyssnar...");
-				//	message = (String) input.readObject();
-					//System.out.println(message);
+					
 					try{
-						AudioInputStream audioInputStream=AudioSystem.getAudioInputStream((InputStream) input.readObject());
-						Clip clip=AudioSystem.getClip();
-						clip.open();
-						clip.start();
+						sound=(byte[]) input.readObject();
+						System.out.println("read file ");
+						InputStream myInputStream = new ByteArrayInputStream(sound); 
+					AudioInputStream audioInputStream=AudioSystem.getAudioInputStream(myInputStream);
+					System.out.println("get input stream");
+				Clip clip=AudioSystem.getClip();
+				clip.open();
+			clip.start();
+			System.out.println("Play clip");
 					}
 					catch(Exception ex){}
 				}
 			} catch (IOException e) {
 				System.out.println(e);
-			} //catch (ClassNotFoundException e1) {
-				//System.out.println(e1);
-		//	}
+			} 
 		}
 	}
 
