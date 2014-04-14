@@ -1,7 +1,7 @@
 /**
  * This class represents a data storage/base where all the information if stored. 
  */
-package Server;
+package server;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,13 +14,13 @@ import javax.sound.sampled.UnsupportedAudioFileException;
  * @author Sebastian Aspegren
  * 
  */
-public class DataStorage {
+public class Controller {
 	
 	private String filePath = ("mp3files/");
 	
-	public DataStorage() {
+	public Controller() {
 		
-		loadAudioFile(filePath + "Heroes of Newerth Sounds - Witch Slayer Voice.mp3");
+	//	loadAudioFile(filePath + "Heroes of Newerth Sounds - Witch Slayer Voice.mp3");
 		
 	}
 	

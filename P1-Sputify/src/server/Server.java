@@ -1,7 +1,7 @@
 /**
  * 
  */
-package Server;
+package server;
 
 import java.net.*;
 import java.io.*;
@@ -10,15 +10,15 @@ import java.io.*;
  * @authors mehmedagica, Sebastian Aspegren
  *
  */
-public class Controller {
+public class Server {
 	
 	
 	private int port;
-	private String[] messages;
+	//private String[] messages;
 	
-	public Controller(int port, String[] strCom) {
+	public Server(int port, String[] strCom) {
 		this.port = port;
-		this.messages = strCom;
+		//this.messages = strCom;
 		
 		System.out.println("Server started");
 		System.out.println("Server waiting for client connections...");
@@ -34,7 +34,7 @@ public class Controller {
 	 */
 	public static void main(String[] args) {
 		String[] meddelanden = null;
-		new Controller(5556, meddelanden);
+		new Server(5556, meddelanden);
 	}
 	
 	/**
@@ -97,7 +97,7 @@ public class Controller {
 				ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream()); 
 				System.out.println("Object output stream created");
 				//Here comes code to send the audio file to the client
-				oos.writeObject(DataStorage.loadAudioFile(filePath + fileName));
+				oos.writeObject(Controller.loadAudioFile(filePath + fileName));
 				oos.flush();
 				Thread.sleep( 3000 );
 				System.out.println("File sent to the client");
