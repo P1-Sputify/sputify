@@ -16,11 +16,10 @@ import javax.sound.sampled.UnsupportedAudioFileException;
  */
 public class Controller {
 	
-	private String filePath = ("mp3files/");
+	private String filePath = ("wavfiles/");
 	
 	public Controller() {
 		
-	//	loadAudioFile(filePath + "Heroes of Newerth Sounds - Witch Slayer Voice.mp3");
 		
 	}
 	
@@ -86,33 +85,6 @@ public class Controller {
 	public boolean verifyUser(String userName, String password) {
 
 		return false;
-
-	}
-
-	/**
-	 * A method used to get a track with a specific id.
-	 * 
-	 * @param trackId
-	 *            The id of the track we want to find.
-	 * @return The track if it was found, if not return null.
-	 */
-	public Track getTrack(int trackId) {
-
-		return null;
-
-	}
-
-	/**
-	 * A method used to get a user with a specific id.
-	 * 
-	 * @param UserId
-	 *            The id of the user we want to find.
-	 * 
-	 * @return The user if it was found. If the user was not found return null.
-	 */
-	public User getUser(int UserId) {
-
-		return null;
 
 	}
 }

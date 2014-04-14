@@ -16,7 +16,7 @@ public class Server {
 	private int port;
 	//private String[] messages;
 	
-	public Server(int port, String[] strCom) {
+	public Server(int port) {
 		this.port = port;
 		//this.messages = strCom;
 		
@@ -33,8 +33,8 @@ public class Server {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		String[] meddelanden = null;
-		new Server(5556, meddelanden);
+	//	String[] meddelanden = null;
+		new Server(5556);
 	}
 	
 	/**
