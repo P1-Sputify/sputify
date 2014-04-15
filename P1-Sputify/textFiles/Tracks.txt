@@ -1,0 +1,9 @@
+0;Mousley;Green Song (Mousley Remix);None;172;wavfiles/®¢--- - Green Song (Mousley Remix).wav
+1;Mousley;Anata wa Tokubetsu;None;140;wavfiles/Anata wa Tokubetsu.wav
+2;Mousley;Hato Got Groove;None;107;wavfiles/Hato Got Groove.wav
+3;Mousley;Important;None;199;wavfiles/Important.wav
+4;Purple Parade;Late Knight 2;None;85;wavfiles/Late Knight2.wav
+5;Purple Parade;Rainbow Death Rocket;None;102;wavfiles/Rainbow Death Rocket.wav
+6;Mousley;Real Smooth;None;213;wavfiles/Real Smooth.wav
+7;Mousley;Summer;None;180;wavfiles/Summer.wav
+8;Purple Parade;TNGHT W DNC;None;157;wavfiles/TNGHT W DNC.wav
