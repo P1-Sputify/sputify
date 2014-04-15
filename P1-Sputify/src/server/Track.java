@@ -12,14 +12,14 @@ package server;
  */
 public class Track {
 	
-	private int id;
+	private String id;
 	private String name;
 	private String artist;
 	//The length of the track measured in seconds.
 	private int length;
 	private String album;
 	
-	public Track(int id, String artist, String name,String album,  int time ){
+	public Track(String id, String artist, String name,String album,  int time ){
 		this.id=id;
 		this.name=name;
 		this.artist=artist;
@@ -31,7 +31,7 @@ public class Track {
 	/**
 	 * @return the id
 	 */
-	public int getId() {
+	public String getId() {
 		return id;
 	}
 

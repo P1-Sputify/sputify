@@ -9,6 +9,8 @@ import java.util.Hashtable;
  * 
  */
 public class DataStorage {
+	//TrackID as key.
+	private Hashtable<String, Track> tracks;
 
 	/**
 	 * A method used to get a track with a specific id.
