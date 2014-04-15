@@ -18,14 +18,24 @@ public class Track {
 	//The length of the track measured in seconds.
 	private int length;
 	private String album;
+	//Where the file is located on the harddrive. AKA the file path.
+	private String location;
 	
-	public Track(String id, String artist, String name,String album,  int time ){
+	public Track(String id, String artist, String name,String album,  int time, String location ){
 		this.id=id;
 		this.name=name;
 		this.artist=artist;
 		this.album=album;
 		this.length=time;
+		this.location=location;
 		
+	}
+	/**
+	 * 
+	 * @return the location
+	 */
+	public String getLocation() {
+		return location;
 	}
 
 	/**
@@ -68,8 +78,8 @@ public class Track {
 	 */
 	@Override
 	public String toString() {
-		return "Track [id=" + id + ", name=" + name + ", artist=" + artist
-				+ ", length=" + length + ", album=" + album + "]";
+		return "Track [Name = " + name + ", Artist = " + artist
+				+ ", length = " + length + " seconds" + ", album = " + album + "]";
 	}
 	
 
