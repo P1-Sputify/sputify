@@ -6,6 +6,8 @@ package server;
 import java.net.*;
 import java.io.*;
 
+import javax.swing.JOptionPane;
+
 /**
  * @authors mehmedagica, Sebastian Aspegren
  *
@@ -46,12 +48,15 @@ public class Server {
 	private class Connect implements Runnable { 
 		/**
 		 * The run method. It attempts to create a server on the given port
-		 *  then creates a new thread where it attempts to communicate with the client.
+		 *  then creates  new threads where it attempts to communicate with the client.
 		 */
 		public void run() {
 			ServerSocket serverSocket = null;
 			Socket socket; 
+			//Thread that gives output
 			Thread clientThread;
+			//Thread that receives input
+			Thread clientListener;
 		
 			try {
 				serverSocket = new ServerSocket(port);
@@ -60,7 +65,9 @@ public class Server {
 					socket = serverSocket.accept(); // Här ska kommunikationen med klienten startas
 					System.out.println("Server socket accept client");
 					clientThread = new Thread(new TalkToClient(socket));
+					clientListener= new Thread(new ListenToClient(socket));
 					clientThread.start();
+					clientListener.start();
 					System.out.println("A new client thread created and started");
 				}
 			} 
@@ -114,4 +121,39 @@ public class Server {
 			}
 		}
 	}
+	private class ListenToClient implements Runnable {
+private Socket socket;
+
+		public ListenToClient(Socket socket){
+			this.socket = socket;
+		}
+		@Override
+		public void run() {
+			// TODO Auto-generated method stub
+			
+			
+			try {
+				ObjectInputStream ois= new ObjectInputStream(socket.getInputStream());
+				while(true) {
+					if(ois.readObject().equals("hej")){
+				System.out.println("This was sent from the client " + ois.readObject());
+				JOptionPane.showMessageDialog(null, ois.readObject());
+				
+					}
+				}
+			} 
+			catch(Exception e1 ) {
+				System.out.println( e1 );
+			}
+	
+			try {
+				socket.close();
+			} 
+			catch( IOException e ) { 
+				System.out.println( e );
+			}
+		}
+			
+		} 
+		
 }
