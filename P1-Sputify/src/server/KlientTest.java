@@ -35,11 +35,13 @@ public class KlientTest {
 						serverPort);
 				ObjectInputStream input = new ObjectInputStream(
 						socket.getInputStream());
+				ObjectOutputStream output = new ObjectOutputStream(socket.getOutputStream());
 		
 			byte[] sound;
 				while (true) {
 					
 					    try {
+					    	output.writeObject("hej");
 					    	sound=(byte[] ) input.readObject();
 					    	InputStream myInputStream = new ByteArrayInputStream(sound);
 					        AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(myInputStream);
