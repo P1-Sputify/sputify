@@ -3,6 +3,7 @@ package server;
 import java.net.*;
 
 import javax.sound.sampled.*;
+import javax.swing.JOptionPane;
 
 import java.io.*;
 
@@ -55,6 +56,8 @@ public class KlientTest {
 					    	output.writeObject("hej");
 					    //	Object object= input.readObject();
 					    	sound=(byte[] ) object;
+					    	if(counter==3)
+					    		JOptionPane.showMessageDialog(null, sound[1]);
 					    	InputStream myInputStream = new ByteArrayInputStream(sound);
 					     //   AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(myInputStream);
 					    //    Clip clip = AudioSystem.getClip();
@@ -78,6 +81,6 @@ public class KlientTest {
 
 	public static void main(String[] args) {
 		// new TCPClientD("195.178.232.145", 6666);
-		new KlientTest("127.0.0.1", 5556);
+		new KlientTest("195.178.234.227", 57005);
 	}
 }

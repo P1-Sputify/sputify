@@ -31,14 +31,6 @@ public class Server {
 	}
 
 	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		// String[] meddelanden = null;
-		new Server(5556);
-	}
-
-	/**
 	 * A private class representing the connection between the client and the
 	 * server.
 	 * 
@@ -160,6 +152,14 @@ public class Server {
 			}
 		}
 
+	}
+
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		// String[] meddelanden = null;
+		new Server(57005);
 	}
 
 }
