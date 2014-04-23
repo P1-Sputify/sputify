@@ -50,7 +50,7 @@ public class DataStorage {
 		return null;
 
 	}
-	private void loadTracks(String fileName)
+	private void loadUsers(String fileName)
 	{
 		try
 		{
@@ -78,7 +78,7 @@ public class DataStorage {
 
 		}
 	}
-	private void loadUsers(String fileName)
+	private void loadTracks(String fileName)
 	{
 		try
 		{
