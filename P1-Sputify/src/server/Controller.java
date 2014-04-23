@@ -16,7 +16,6 @@ import javax.sound.sampled.UnsupportedAudioFileException;
  */
 public class Controller {
 	
-	private String filePath = ("wavfiles/");
 	
 	public Controller() {
 		
@@ -76,7 +75,7 @@ public class Controller {
 	 * password to the ones in the dataStorage.
 	 * 
 	 * @param userName
-	 *            The username we want to verify and compare
+	 *            The username we want to verify and compare.
 	 * @param password
 	 *            The password we want to verify and compare.
 	 * 

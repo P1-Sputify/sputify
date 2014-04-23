@@ -10,7 +10,7 @@ import java.io.InputStreamReader;
 import java.util.Hashtable;
 
 /**
- * @author Nethakaaru
+ * @author Sebastian Aspegren
  * 
  */
 public class DataStorage {
@@ -45,9 +45,9 @@ public class DataStorage {
 	 * 
 	 * @return The user if it was found. If the user was not found return null.
 	 */
-	public User getUser(int UserId) {
+	public User getUser(String userId) {
 
-		return null;
+		return userList.get(userId);
 
 	}
 	private void loadUsers(String fileName)
@@ -60,12 +60,13 @@ public class DataStorage {
 
 			String[] parts;
 			String txt = br.readLine();
-
+			//while there is text left.
 			while (txt != null)
 			{
+				//split a line into parts then make a user out of it.
 				parts = txt.split(";");
 
-				User user = new User(Integer.parseInt(parts[0]), parts[1], parts[2], parts[3]);
+				User user = new User(parts[0], parts[1], parts[2], parts[3]);
 				userList.put(parts[0], user);
 				txt = br.readLine();
 			}
@@ -88,12 +89,14 @@ public class DataStorage {
 
 			String[] parts;
 			String txt = br.readLine();
-
+			//while there is text left.
 			while (txt != null)
 			{
+				//split it and make a track out of it.
 				parts = txt.split(";");
-
+				
 				Track track = new Track(parts[0], parts[1], parts[2], parts[3],Integer.parseInt(parts[4]), parts[5]);
+				
 				trackList.put(parts[0], track);
 				txt = br.readLine();
 			}
@@ -106,6 +109,7 @@ public class DataStorage {
 
 		}
 	}
+	// Test main method.
 	public static void main(String[]args){
 		DataStorage ds= new DataStorage();
 		System.out.println(ds.getTrack("7").toString());

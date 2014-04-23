@@ -16,11 +16,13 @@ public class Server {
 
 	private int port;
 
-	// private String[] messages;
-
+/**
+ * The constructor for the server. Creates a thread with a new connect.
+ * 
+ * @param port the port we wish to bind the server to.
+ */
 	public Server(int port) {
 		this.port = port;
-		// this.messages = strCom;
 
 		System.out.println("Server started");
 		System.out.println("Server waiting for client connections...");
@@ -75,15 +77,26 @@ public class Server {
 			}
 		}
 	}
-
+/**
+ * A private class that sends output to the client
+ * @author Sebastian Aspegren
+ *
+ */
 	private class TalkToClient implements Runnable {
 
 		private Socket socket;
-
+/**
+ * The constructor for TalkToClient. Receives a socket that it uses for output.
+ * 
+ * @param socket 
+ * 				The socket we use for output.
+ */
 		public TalkToClient(Socket socket) {
 			this.socket = socket;
 		}
-
+/**
+ * The run method. It attempts to send a byte[] to the client.
+ */
 		public void run() {
 
 			final String filePath = "wavfiles/";
@@ -114,38 +127,48 @@ public class Server {
 			}
 		}
 	}
-
+/**
+ * A class used to listen to input from the client.
+ * @author Sebastian Aspegren
+ *
+ */
 	private class ListenToClient implements Runnable {
 		private Socket socket;
-
+/**
+ * The constructor for ListenToClient. Receives a socket which it uses for input.
+ * @param socket
+ */
 		public ListenToClient(Socket socket) {
 			this.socket = socket;
 		}
 
-		@Override
+		/**
+		 * The run method. It attempts to write what was sent from the client if it receives a specific string.
+		 */
 		public void run() {
-			// TODO Auto-generated method stub
+			
 
 			try {
 				ObjectInputStream ois= new ObjectInputStream(socket.getInputStream());
 				while (true) {
-				//	if(socket.isConnected()){
+				
 				
 					Object input = ois.readObject();
+					//If client sent "Halloj"
 					if (input.equals("Halloj")) {
 						System.out.println("This was sent from the client "
 								+ input);
 						JOptionPane.showMessageDialog(null, input);
 
 					}
-					//}
+				
 				}
 			} catch (Exception e1) {
 				System.out.println(e1);
 			}
 
 			try {
-			//	if(!socket.isConnected())
+			
 				socket.close();
 			} catch (IOException e) {
 				System.out.println(e);
@@ -154,11 +177,11 @@ public class Server {
 
 	}
 
-	/**
+	/** The main method for the server.
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		// String[] meddelanden = null;
+	
 		new Server(57005);
 	}
 

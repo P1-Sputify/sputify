@@ -4,7 +4,7 @@
 package server;
 
 /**
- * @author mehmedagica
+ * @authors mehmedagica, Sebastian Aspegren
  * 
  * A class representing a song/track. The track had an id, a name, an artist, a length and an album it belongs to.
  * Added a line to class description
@@ -73,10 +73,9 @@ public class Track {
 		return album;
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
+	/**
+	 * @return A string with information regarding the track.
 	 */
-	@Override
 	public String toString() {
 		return "Track [Name = " + name + ", Artist = " + artist
 				+ ", length = " + length + " seconds" + ", album = " + album + "]";

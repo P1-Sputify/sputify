@@ -6,19 +6,21 @@ import javax.sound.sampled.*;
 import javax.swing.JOptionPane;
 
 import java.io.*;
-
+/**
+ * 
+ * @author Sebastian Aspegren
+ *
+ */
 public class KlientTest {
 	private String serverIP;
 	private int serverPort;
 	
 
 	public KlientTest(String serverIP, int serverPort) {
-	//	playSound();
 	//	Thread musicThread=new Thread(new Runnable(){
 		//	public void run(){
 			//	playSound();
 			//}
-			
 	//	});
 	//	musicThread.start();
 		this.serverIP = serverIP;
@@ -54,15 +56,12 @@ public class KlientTest {
 					    	if(counter==3)
 					    		output.writeObject("Halloj");
 					    	output.writeObject("hej");
-					    //	Object object= input.readObject();
+					   
 					    	sound=(byte[] ) object;
 					    	if(counter==3)
-					    		JOptionPane.showMessageDialog(null, sound[1]);
+					    		JOptionPane.showMessageDialog(null, sound);
 					    	InputStream myInputStream = new ByteArrayInputStream(sound);
-					     //   AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(myInputStream);
-					    //    Clip clip = AudioSystem.getClip();
-					  //      clip.open(audioInputStream);
-					//        clip.start();
+					
 					    } catch(Exception ex) {
 					        System.out.println("Error with playing sound.");
 					        ex.printStackTrace();
@@ -73,14 +72,14 @@ public class KlientTest {
 				System.out.println(e);
 					
 			} catch (ClassNotFoundException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			} 
 	}
 	}
 
 	public static void main(String[] args) {
-		// new TCPClientD("195.178.232.145", 6666);
-		new KlientTest("195.178.234.227", 57005);
+		
+		new KlientTest("127.0.0.1", 57005);
 	}
 }
