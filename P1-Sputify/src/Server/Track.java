@@ -18,13 +18,15 @@ public class Track {
 	//The length of the track measured in seconds.
 	private int length;
 	private String album;
+	private String location;
 	
-	public Track(int id, String artist, String name,String album,  int time ){
-		this.id=id;
-		this.name=name;
-		this.artist=artist;
-		this.album=album;
-		this.length=time;
+	public Track(int id, String name, String artist, int time, String album, String location){
+		this.id = id;
+		this.name = name;
+		this.artist = artist;
+		this.length = time;
+		this.album = album;
+		this.location = location;
 		
 	}
 
@@ -61,6 +63,14 @@ public class Track {
 	 */
 	public String getAlbum() {
 		return album;
+	}
+	
+	/**
+	 * 
+	 * @return the location
+	 */
+	public String getLocation() {
+		return location;
 	}
 
 	/* (non-Javadoc)
