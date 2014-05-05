@@ -88,19 +88,51 @@ public class Controller {
 			final String filePath = "wavfiles/";
 			final String fileName = "finishhim.wav";
 	
-			try {
-				
-				//Get/Read the file from hard drive or database
-				
+			try {				
 				
 				//Have to use it to send data to the client
 				ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream()); 
 				System.out.println("Object output stream created");
-				//Here comes code to send the audio file to the client
-				oos.writeObject(DataStorage.loadAudioFile(filePath + fileName));
-				oos.flush();
-				Thread.sleep( 3000 );
-				System.out.println("File sent to the client");
+				ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+				System.out.println("Object input stream created");
+				
+				//Get user name and password
+				//as string array
+				String[] userLogin = null;
+				Boolean waitForUserLogin = true;
+				while(waitForUserLogin) {
+					userLogin = (String[])ois.readObject();
+					System.out.println("User login received");
+					waitForUserLogin = false;
+				}
+				
+				//If user is OK then send track list to the client
+				if(DataStorage.verifyUser(userLogin[0], userLogin[1])) {
+					//Send track list to the client as HashTable
+					oos.writeObject(DataStorage.tracks);
+					oos.flush();
+					System.out.println("Track list sended to the client");
+					Thread.sleep(3000);
+				}
+				
+				//Wait for client to ask about a audio file
+				Integer trackId = 0;
+				Boolean waitForTrackId = true;
+				while(waitForTrackId) {
+					trackId = (Integer)ois.readObject();
+					System.out.println("Track ID received");
+					waitForTrackId = false;
+				}
+				
+				//Send audio file to the client
+				if (trackId > 0) {
+					//Here comes code to send the audio file to the client
+					oos.writeObject(DataStorage.loadAudioFile(trackId));
+					oos.flush();
+					System.out.println("File sent to the client");
+					Thread.sleep( 3000 );
+				}
+				
 			} 
 			catch(Exception e1 ) {
 				System.out.println( e1 );
