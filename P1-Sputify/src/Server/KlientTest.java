@@ -37,6 +37,56 @@ public class KlientTest {
 	     }
 	}
 	
+	public void playSound(String fileName) throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+		
+		AudioInputStream stream = AudioSystem.getAudioInputStream(new File(fileName));
+//		stream = AudioSystem.getAudioInputStream(new URL(
+//      "http://hostname/audiofile"));
+
+	    AudioFormat format = stream.getFormat();
+	    if (format.getEncoding() != AudioFormat.Encoding.PCM_SIGNED) {
+	      format = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, format
+	          .getSampleRate(), format.getSampleSizeInBits() * 2, format
+	          .getChannels(), format.getFrameSize() * 2, format.getFrameRate(),
+	          true); // big endian
+	      stream = AudioSystem.getAudioInputStream(format, stream);
+	    }
+
+	    SourceDataLine.Info info = new DataLine.Info(SourceDataLine.class, stream
+	        .getFormat(), ((int) stream.getFrameLength() * format.getFrameSize()));
+	    SourceDataLine line = (SourceDataLine) AudioSystem.getLine(info);
+	    line.open(stream.getFormat());
+	    line.start();
+
+	    int numRead = 0;
+	    byte[] buf = new byte[line.getBufferSize()];
+	    while ((numRead = stream.read(buf, 0, buf.length)) >= 0) {
+	      int offset = 0;
+	      while (offset < numRead) {
+	        offset += line.write(buf, offset, numRead - offset);
+	      }
+	    }
+	    line.drain();
+	    line.stop();
+	}
+	
+	
+	public static synchronized void playASound(final String url) {
+		  new Thread(new Runnable() {
+		  // The wrapper thread is unnecessary, unless it blocks on the
+		  // Clip finishing; see comments.
+		    public void run() {
+		      try {
+		        Clip clip = AudioSystem.getClip();
+		        AudioInputStream inputStream = AudioSystem.getAudioInputStream(this.getClass().getResourceAsStream(url));
+		        clip.open(inputStream);
+		        clip.start(); 
+		      } catch (Exception e) {
+		    	  e.printStackTrace();
+		      }
+		    }
+		  }).start();
+		}
 	
 	private class ConnectAndListenToServer implements Runnable {
 		public void run() {
@@ -54,16 +104,7 @@ public class KlientTest {
 				System.out.println("Username & pass sent to server");
 
 				System.out.println("Create hashtable object for song list");
-				Hashtable<Integer, Track> htClient = new Hashtable<Integer, Track>(100);
-				Object obj = null;
-				
-//				while((obj = ois.readObject()) != null) {
-//					if(obj instanceof Hashtable<?, ?>) {
-//						htClient = (Hashtable<Integer, Track>) obj;
-//					}
-//				}
-				
-				htClient = (Hashtable<Integer, Track>) ois.readObject();
+				Hashtable<Integer, Track> htClient = (Hashtable<Integer, Track>) ois.readObject();
 				
 				System.out.println("Song list received from server");
 			
@@ -76,7 +117,9 @@ public class KlientTest {
 				oos.writeObject(trackId);
 				oos.flush();
 				System.out.println("Track ID sent to server");
-				//Thread.sleep(3000);
+				
+				//playSound("C:/WavFiles/tones_100-900_8_bit_square.wav");
+				playASound("wavfiles/finishhim.wav");
 				
 				InputStreamReader isr = new InputStreamReader(socket.getInputStream());
 				bReader = new BufferedReader(isr);
@@ -91,7 +134,9 @@ public class KlientTest {
 				
 				byte[] sound = strConvertToBytes.getBytes();
 				
-				playSound(sound);
+				Integer songLenght = sound.length;
+				
+				//playSound(sound);
 			
 			} 
 			catch (EOFException e) {
