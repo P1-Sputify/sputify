@@ -3,8 +3,7 @@
  */
 package Server;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.sql.*;
 import java.util.*;
 
@@ -22,24 +21,48 @@ public class DataStorage {
 	public static Hashtable<Integer, Track> tracks;
 	public static TreeMap<Integer, User> users;
 	
+	public static Connection connection;
+    public static Statement statement;
+	
 	public DataStorage() {
 		
 		//loadAudioFile(filePath + "Heroes of Newerth Sounds - Witch Slayer Voice.mp3");
 		try {
-			loadTracks();
-			loadUsers();
+			
+			tracks = new Hashtable<Integer, Track>(100);
+			users = new TreeMap<Integer, User>();
+			
+			getResultSetsAndData();
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public void getResultSetsAndData() throws SQLException {
+		
+		connect();
+		
+		//ResultSet rsTracks = statement.executeQuery("SELECT * FROM ac9574.track");
+		ResultSet rsTracks = statement.executeQuery("SELECT * FROM dbsputify.track");
+		
+		loadTracks(rsTracks);
+		
+		//ResultSet rsUsers = statement.executeQuery("SELECT * FROM ac9574.user");
+		ResultSet rsUsers = statement.executeQuery("SELECT * FROM dbsputify.user");
+		
+		loadUsers(rsUsers);
+		
+		disconnect();
 	}
 	
 	/**
 	 * Load tracks from DB to the HashTable
 	 * @throws SQLException
 	 */
-	public void loadTracks() throws SQLException {
+	public void loadTracks(ResultSet rsTracks) throws SQLException {
 		
-		ResultSet rsTracks = MySqlDB.getResultSet("SELECT * FROM ac9574.track");
+		//System.out.println(countRows(rsTracks));
 		
 		while(rsTracks.next()) {
 			
@@ -51,6 +74,8 @@ public class DataStorage {
 					rsTracks.getString("album"),
 					rsTracks.getString("location"));
 			
+			//System.out.println(aTrack.toString());
+			
 			addTrackToHashTable(rsTracks.getInt("id"), aTrack);
         }
 	}
@@ -59,20 +84,24 @@ public class DataStorage {
 	 * Load users from DB to the MapTree
 	 * @throws SQLException
 	 */
-	public void loadUsers() throws SQLException {
+	public void loadUsers(ResultSet rsUsers) throws SQLException {
 		
-		ResultSet rsUsers = MySqlDB.getResultSet("SELECT * FROM ac9574.user");
+		//System.out.println(countRows(rsUsers));
 		
 		while(rsUsers.next()) {
 			
 			User aUser = new User(
-					rsUsers.getInt("id"),
-					rsUsers.getString("name"),
-					rsUsers.getString("password"),
+					//rsUsers.getInt("id"),
+					//rsUsers.getString("name"),
+					//rsUsers.getString("password"),
+					rsUsers.getInt("userId"),
+					rsUsers.getString("userName"),
+					rsUsers.getString("userPassword"),
 					rsUsers.getString("screenName"));
 			
-			addUserToMapTree(rsUsers.getInt("id"), aUser);
-        }	
+			//addUserToMapTree("" + rsUsers.getInt("id"), aUser);
+			addUserToMapTree(rsUsers.getInt("userId"), aUser);
+        }
 	}
 	
 	/**
@@ -80,7 +109,7 @@ public class DataStorage {
 	 * @param trackId, int, track ID
 	 * @param trackData, Track, track object with data
 	 */
-	public void addTrackToHashTable(int trackId, Track trackData) {
+	public void addTrackToHashTable(Integer trackId, Track trackData) {
 		tracks.put(trackId, trackData);
 	}
 
@@ -89,7 +118,7 @@ public class DataStorage {
 	 * @param userId, int, user ID
 	 * @param userData, User, user object with data
 	 */
-	public void addUserToMapTree(int userId, User userData) {
+	public void addUserToMapTree(Integer userId, User userData) {
 		users.put(userId, userData);
 	}
 	
@@ -146,10 +175,9 @@ public class DataStorage {
 	 */
 	public static byte[] loadAudioFile(Integer trackId) {
 		
-		
-		
 		int totalFramesRead = 0;
-		File fileIn = new File(getTrack(trackId).getLocation());
+		//File fileIn = new File(getTrack(trackId).getLocation());
+		File fileIn = new File("wavfiles/finishhim.wav");
 		byte[] audioBytes = null;
 		// somePathName is a pre-existing string whose value was
 		// based on a user selection.
@@ -178,12 +206,12 @@ public class DataStorage {
 		    
 		   
 		  
-		  } catch (IOException e1) {
-				System.out.println(e1);
+		  } catch (IOException e) {
+			  e.printStackTrace();
 		  }
 			
 		} catch (IOException | UnsupportedAudioFileException e) {
-			System.out.println(e);
+			 e.printStackTrace();
 		}
 		 return audioBytes;
 		
@@ -206,17 +234,20 @@ public class DataStorage {
 	 */
 	public static boolean verifyUser(String userName, String password) {
 
-//        for(Integer key: users.keySet()){
-//        	if(users.get(key).getName()==userName && users.get(key).getPassword()==password)
-//        		return true;
-//        }
-         
-        for(Map.Entry<Integer, User> entry : users.entrySet()) {
-        	if(entry.getValue().getName()==userName && entry.getValue().getPassword()==password)
+        for(Integer key: users.keySet()){
+        	String uN = users.get(key).getName();
+        	String uP = users.get(key).getPassword();
+        	if(uN.equals(userName) && uP.equals(password))
         		return true;
         }
+         
+//        for(Map.Entry<String, User> entry : users.entrySet()) {
+//        	if(entry.getValue().getName()==userName && entry.getValue().getPassword()==password)
+//        		return true;
+//        }
         
 		return false;
+		//return true;
 	}
 
 	/**
@@ -247,4 +278,28 @@ public class DataStorage {
 			gUser = users.get(userId);
 		return gUser;
 	}
+	
+	public static void connect() throws SQLException {
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/dbsputify","root","Mornar22!0");
+            //connection = DriverManager.getConnection("jdbc:mysql://195.178.232.7:4040/AC9574","AC9574","Sputify7");
+            statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+        } catch(ClassNotFoundException e1) {
+            System.out.println("Databas-driver hittades ej: "+e1);
+        }
+    }
+    
+    public static void disconnect() throws SQLException {
+        statement.close();
+        connection.close();
+    }
+	
+	public static int countRows(ResultSet resultSet) throws SQLException {
+    	resultSet.last();    
+        int rowCount = resultSet.getRow();
+        resultSet.beforeFirst();
+        
+        return rowCount;
+    }
 }

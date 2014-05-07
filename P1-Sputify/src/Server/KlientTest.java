@@ -45,8 +45,7 @@ public class KlientTest {
 			
 			try {
 				Socket socket = new Socket(InetAddress.getByName(serverIP), serverPort);
-				ObjectInputStream ois = new ObjectInputStream(
-						socket.getInputStream());
+				ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
 				ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream()); 
 				System.out.println("Object output stream created");
 				
@@ -54,20 +53,30 @@ public class KlientTest {
 				oos.flush();
 				System.out.println("Username & pass sent to server");
 
-				Hashtable<Integer, Track> htClient;
+				System.out.println("Create hashtable object for song list");
+				Hashtable<Integer, Track> htClient = new Hashtable<Integer, Track>(100);
+				Object obj = null;
 				
-					htClient = (Hashtable<Integer, Track>) ois.readObject();
-					System.out.println("Song list received from server");
+//				while((obj = ois.readObject()) != null) {
+//					if(obj instanceof Hashtable<?, ?>) {
+//						htClient = (Hashtable<Integer, Track>) obj;
+//					}
+//				}
 				
-					for (Integer key : htClient.keySet()) {
-					   System.out.println(htClient.get(key));
-					}
+				htClient = (Hashtable<Integer, Track>) ois.readObject();
 				
+				System.out.println("Song list received from server");
+			
+				for (Integer key : htClient.keySet()) {
+				   System.out.println(htClient.get(key));
+				}
 				
-				oos.writeObject(new Integer(1));
+				System.out.println("Sending track ID to the server");
+				Integer trackId = 1;
+				oos.writeObject(trackId);
 				oos.flush();
 				System.out.println("Track ID sent to server");
-				Thread.sleep(3000);
+				//Thread.sleep(3000);
 				
 				InputStreamReader isr = new InputStreamReader(socket.getInputStream());
 				bReader = new BufferedReader(isr);
@@ -83,12 +92,18 @@ public class KlientTest {
 				byte[] sound = strConvertToBytes.getBytes();
 				
 				playSound(sound);
-				
-			} catch (Exception e) {
-				System.out.println(e);
-					
+			
 			} 
-	}
+			catch (EOFException e) {
+				e.printStackTrace();
+				//System.out.println(e);
+			}
+				 
+			catch (Exception e) {
+				e.printStackTrace();
+				//System.out.println(e);
+			}
+		}
 	}
 
 	public static void main(String[] args) {

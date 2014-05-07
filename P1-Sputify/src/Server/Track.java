@@ -3,6 +3,8 @@
  */
 package Server;
 
+import java.io.Serializable;
+
 /**
  * @author mehmedagica
  * 
@@ -10,7 +12,7 @@ package Server;
  * Added a line to class description
  *
  */
-public class Track {
+public class Track implements Serializable {
 	
 	private int id;
 	private String name;
@@ -78,8 +80,7 @@ public class Track {
 	 */
 	@Override
 	public String toString() {
-		return "Track [id=" + id + ", name=" + name + ", artist=" + artist
-				+ ", length=" + length + ", album=" + album + "]";
+		return "Track [id=" + id + ", name=" + name + ", artist=" + artist + ", length=" + length + ", album=" + album  + ", location=" + location + "]";
 	}
 	
 
