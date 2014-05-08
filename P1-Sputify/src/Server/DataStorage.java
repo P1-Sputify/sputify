@@ -26,7 +26,6 @@ public class DataStorage {
 	
 	public DataStorage() {
 		
-		//loadAudioFile(filePath + "Heroes of Newerth Sounds - Witch Slayer Voice.mp3");
 		try {
 			
 			tracks = new Hashtable<Integer, Track>(100);
@@ -43,13 +42,13 @@ public class DataStorage {
 		
 		connect();
 		
-		//ResultSet rsTracks = statement.executeQuery("SELECT * FROM ac9574.track");
-		ResultSet rsTracks = statement.executeQuery("SELECT * FROM dbsputify.track");
+		ResultSet rsTracks = statement.executeQuery("SELECT * FROM ac9574.track");
+		//ResultSet rsTracks = statement.executeQuery("SELECT * FROM dbsputify.track");	//For test purpose only
 		
 		loadTracks(rsTracks);
 		
-		//ResultSet rsUsers = statement.executeQuery("SELECT * FROM ac9574.user");
-		ResultSet rsUsers = statement.executeQuery("SELECT * FROM dbsputify.user");
+		ResultSet rsUsers = statement.executeQuery("SELECT * FROM ac9574.user");
+		//ResultSet rsUsers = statement.executeQuery("SELECT * FROM dbsputify.user");	//For test purpose only
 		
 		loadUsers(rsUsers);
 		
@@ -62,6 +61,7 @@ public class DataStorage {
 	 */
 	public void loadTracks(ResultSet rsTracks) throws SQLException {
 		
+		//For test purpose only
 		//System.out.println(countRows(rsTracks));
 		
 		while(rsTracks.next()) {
@@ -74,6 +74,7 @@ public class DataStorage {
 					rsTracks.getString("album"),
 					rsTracks.getString("location"));
 			
+			//For test purpose only
 			//System.out.println(aTrack.toString());
 			
 			addTrackToHashTable(rsTracks.getInt("id"), aTrack);
@@ -86,20 +87,21 @@ public class DataStorage {
 	 */
 	public void loadUsers(ResultSet rsUsers) throws SQLException {
 		
+		//For test purpose only
 		//System.out.println(countRows(rsUsers));
 		
 		while(rsUsers.next()) {
 			
 			User aUser = new User(
-					//rsUsers.getInt("id"),
-					//rsUsers.getString("name"),
-					//rsUsers.getString("password"),
-					rsUsers.getInt("userId"),
-					rsUsers.getString("userName"),
-					rsUsers.getString("userPassword"),
+					rsUsers.getInt("id"),
+					rsUsers.getString("name"),
+					rsUsers.getString("password"),
+					//rsUsers.getInt("userId"),
+					//rsUsers.getString("userName"),
+					//rsUsers.getString("userPassword"),
 					rsUsers.getString("screenName"));
 			
-			//addUserToMapTree("" + rsUsers.getInt("id"), aUser);
+			
 			addUserToMapTree(rsUsers.getInt("userId"), aUser);
         }
 	}
