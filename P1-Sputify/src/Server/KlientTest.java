@@ -97,56 +97,58 @@ public class KlientTest {
 				Socket socket = new Socket(InetAddress.getByName(serverIP), serverPort);
 				ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
 				ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream()); 
-				System.out.println("Object output stream created");
+				System.out.println(">> Object output stream created");
 				
 				oos.writeObject(new String[] {"User1","Pwd1"});
 				oos.flush();
-				System.out.println("Username & pass sent to server");
+				System.out.println("<< Username & pass sent to server");
 
-				System.out.println("Create hashtable object for song list");
+				System.out.println(">> Create hashtable object for song list");
 				Hashtable<Integer, Track> htClient = (Hashtable<Integer, Track>) ois.readObject();
 				
-				System.out.println("Song list received from server");
+				System.out.println("<< Song list received from server");
 			
 				for (Integer key : htClient.keySet()) {
 				   System.out.println(htClient.get(key));
 				}
 				
-				System.out.println("Sending track ID to the server");
+				System.out.println(">> Sending track ID to the server");
 				Integer trackId = 1;
 				oos.writeObject(trackId);
 				oos.flush();
-				System.out.println("Track ID sent to server");
+				System.out.println(">> Track ID sent to server");
 				
 				//playSound("C:/WavFiles/tones_100-900_8_bit_square.wav");
-				playASound("wavfiles/finishhim.wav");
+				//playASound("wavfiles/finishhim.wav");
 				
+				System.out.println(">> Create Input Stream And Buffered Reader");
 				InputStreamReader isr = new InputStreamReader(socket.getInputStream());
 				bReader = new BufferedReader(isr);
 		
+				System.out.println(">> Create string to read stream into it");
 				String song;
 				while ((song = bReader.readLine()) != null) {
-					
 					sb.append(song);
+					System.out.println(">> Reading from stream...");
 				}
 				
+				System.out.println(">> Convert String to Bytes and get it to the byte array");
 				String strConvertToBytes = sb.toString();
-				
 				byte[] sound = strConvertToBytes.getBytes();
-				
 				Integer songLenght = sound.length;
 				
-				//playSound(sound);
+				System.out.println(">> At the end play the sound");
+				playSound(sound);
 			
 			} 
 			catch (EOFException e) {
 				e.printStackTrace();
-				//System.out.println(e);
+
 			}
 				 
 			catch (Exception e) {
 				e.printStackTrace();
-				//System.out.println(e);
+
 			}
 		}
 	}

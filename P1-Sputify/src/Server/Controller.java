@@ -104,38 +104,41 @@ public class Controller {
 			try {				
 				
 				//Have to use it to send data to the client
-				System.out.println("Creating Object Output Stream");
+				System.out.println(">> Creating Object Output Stream");
 				ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream()); 
-				System.out.println("Object Output Stream created");
+				System.out.println(">> Object Output Stream created");
 			
 				
 				//Have to use it to receive data from the client
-				System.out.println("Creating Object Onput Stream");
+				System.out.println(">> Creating Object Onput Stream");
 				ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
-				System.out.println("Object input stream created");
+				System.out.println(">> Object input stream created");
 				
 				
 				
+				System.out.println("<< Wait for user name and password from the client");
 				//Get user name and password
 				//as string array
 				String[] userLogin = (String[])ois.readObject();
-				System.out.println("User login received: " + userLogin[0] + " " + userLogin[1]);
+				System.out.println("<< User login received: " + userLogin[0] + " " + userLogin[1]);
 				
 				Hashtable<Integer, Track> songList = DataStorage.tracks;
 				
+				System.out.println(">> Create Track list and send it to the client as Hash Table");
 				//If user is OK then send track list to the client
 				if(DataStorage.verifyUser(userLogin[0], userLogin[1])) {
 					oos.writeObject(songList);
 					oos.flush();
-					System.out.println("Track list sended to the client");
+					System.out.println(">> Track list sended to the client");
 				}
 				else {
-					System.out.println("Incorrect login name and/or password");
+					System.out.println(">> ERROR! Incorrect login name and/or password");
 				}
 				
+				System.out.println("<< Wait for track id from client...");
 				//Wait for client to ask about a audio file
 				Integer trackId = (Integer)ois.readObject();
-				System.out.println("Track ID received");
+				System.out.println("<< Track ID received");
 				
 				//Send audio file to the client
 				if (trackId > 0) {
@@ -145,56 +148,66 @@ public class Controller {
 //					System.out.println("File sent to the client");
 //					Thread.sleep( 3000 );
 					
-					int totalFramesRead = 0;
-					File fileIn = new File(DataStorage.getTrack(trackId).getLocation());
-					
 					byte[] audioBytes = null;
 					FileOutputStream fos = null;
 					BufferedOutputStream bos = null;
 					// somePathName is a pre-existing string whose value was
 					// based on a user selection.
 					try {
-					  AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(fileIn);
-					  int bytesPerFrame = audioInputStream.getFormat().getFrameSize();
-					  if (bytesPerFrame == AudioSystem.NOT_SPECIFIED) {
-					    // some audio formats may have unspecified frame size
-					    // in that case we may read any amount of bytes
-					    bytesPerFrame = 1;
-					  } 
-					  // Set an arbitrary buffer size of 1024 frames.
-					  int numBytes = 4096 * bytesPerFrame; 
-					  audioBytes = new byte[numBytes];
-					  try {
-					    int numBytesRead = 0;
-					    int numFramesRead = 0;
+						
+						System.out.println(">> Create a new file with queued Track ID...");
+						File fileIn = new File(DataStorage.getTrack(trackId).getLocation());
+						System.out.println(">> A new file created...");
+						
+						System.out.println(">> Create Audio Input Stream with created file...");
+						//BufferedInputStream bis = new BufferedInputStream(getClass().getResourceAsStream(DataStorage.getTrack(trackId).getLocation()));  
+						//AudioInputStream ais = AudioSystem.getAudioInputStream(bis);
+						
+						//Here is failure
+						AudioInputStream ais = AudioSystem.getAudioInputStream(fileIn);
+						System.out.println(">> Audio Input Stream created...");
+						
+						System.out.println(">> Get count bytes per frame");
+						int bytesPerFrame = ais.getFormat().getFrameSize();
+						if (bytesPerFrame == AudioSystem.NOT_SPECIFIED) {
+							// some audio formats may have unspecified frame size
+							// in that case we may read any amount of bytes
+							bytesPerFrame = 1;
+						} 
+						
+						System.out.println(">> Set buffer size and create new byte array");
+						// Set an arbitrary buffer size of 1024 frames.
+						int numBytes = 4096 * bytesPerFrame; 
+						audioBytes = new byte[numBytes];
+						try {
+							int numBytesRead = 0;
+							int numFramesRead = 0;
 					    
-					    fos = new FileOutputStream(fileIn);
-						bos = new BufferedOutputStream(fos);
+							System.out.println(">> Create File and Buffer Output Streams");
+							fos = new FileOutputStream(fileIn);
+							bos = new BufferedOutputStream(fos);
 					    
-					    // Try to read numBytes bytes from the file.
-					    while ((numBytesRead = audioInputStream.read(audioBytes)) > 0) {
-					      // Calculate the number of frames actually read.
-					      numFramesRead = numBytesRead / bytesPerFrame;
-					      totalFramesRead += numFramesRead;
-					      // Here, do something useful with the audio data that's 
-					      // now in the audioBytes array...
-					      bos.write(audioBytes, 0, numBytesRead);
-					    }
+							System.out.println(">> Read bytes...");
+							// Try to read numBytes bytes from the file.
+							while ((numBytesRead = ais.read(audioBytes)) > 0) {
+								// Calculate the number of frames actually read.
+								numFramesRead = numBytesRead / bytesPerFrame;
+								//Read bytes array into buffered output stream
+								System.out.println(">> ... and send to client throught buffered output stream...");
+								bos.write(audioBytes, 0, numBytesRead);
+							}
 					    
-					    bos.flush();
-						bos.close();
-						audioInputStream.close();
-						System.out.println("File sent to the client");
-						//Thread.sleep( 3000 );
+							bos.flush();
+							bos.close();
+							ais.close();
+							System.out.println("File sent to the client");
 					  
-					  } catch (IOException e) {
-						  e.printStackTrace();
-						  //System.out.println(e1);
-					  }
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
 						
 					} catch (IOException | UnsupportedAudioFileException e) {
 						e.printStackTrace();
-						//System.out.println(e);
 					}
 				}
 				
