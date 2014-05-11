@@ -102,7 +102,8 @@ public class DataStorage {
 					rsUsers.getString("screenName"));
 			
 			
-			addUserToMapTree(rsUsers.getInt("userId"), aUser);
+			//addUserToMapTree(rsUsers.getInt("userId"), aUser);
+			addUserToMapTree(rsUsers.getInt("id"), aUser);
         }
 	}
 	
