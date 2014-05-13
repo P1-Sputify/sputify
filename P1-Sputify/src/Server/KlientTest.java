@@ -121,21 +121,24 @@ public class KlientTest {
 				//playSound("C:/WavFiles/tones_100-900_8_bit_square.wav");
 				//playASound("wavfiles/finishhim.wav");
 				
-				System.out.println(">> Create Input Stream And Buffered Reader");
-				InputStreamReader isr = new InputStreamReader(socket.getInputStream());
-				bReader = new BufferedReader(isr);
+//				System.out.println(">> Create Input Stream And Buffered Reader");
+//				InputStreamReader isr = new InputStreamReader(socket.getInputStream());
+//				bReader = new BufferedReader(isr);
 		
-				System.out.println(">> Create string to read stream into it");
-				String song;
-				while ((song = bReader.readLine()) != null) {
-					sb.append(song);
-					System.out.println(">> Reading from stream...");
-				}
+				//Object byteArrayObj = ois.readObject(); 
+				byte[] sound = (byte[]) ois.readObject();
 				
-				System.out.println(">> Convert String to Bytes and get it to the byte array");
-				String strConvertToBytes = sb.toString();
-				byte[] sound = strConvertToBytes.getBytes();
-				Integer songLenght = sound.length;
+				//System.out.println(">> Create string to read stream into it");
+				//String song;
+				//while ((song = bReader.readLine()) != null) {
+					//sb.append(song);
+					//System.out.println(">> Reading from stream...");
+				//}
+				
+				//System.out.println(">> Convert String to Bytes and get it to the byte array");
+				//String strConvertToBytes = sb.toString();
+				//byte[] sound = strConvertToBytes.getBytes();
+				//Integer songLenght = sound.length;
 				
 				System.out.println(">> At the end play the sound");
 				playSound(sound);

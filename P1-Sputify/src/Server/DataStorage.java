@@ -42,13 +42,13 @@ public class DataStorage {
 		
 		connect();
 		
-		ResultSet rsTracks = statement.executeQuery("SELECT * FROM ac9574.track");
-		//ResultSet rsTracks = statement.executeQuery("SELECT * FROM dbsputify.track");	//For test purpose only
+		//ResultSet rsTracks = statement.executeQuery("SELECT * FROM ac9574.track");
+		ResultSet rsTracks = statement.executeQuery("SELECT * FROM dbsputify.track");	//For test purpose only
 		
 		loadTracks(rsTracks);
 		
-		ResultSet rsUsers = statement.executeQuery("SELECT * FROM ac9574.user");
-		//ResultSet rsUsers = statement.executeQuery("SELECT * FROM dbsputify.user");	//For test purpose only
+		//ResultSet rsUsers = statement.executeQuery("SELECT * FROM ac9574.user");
+		ResultSet rsUsers = statement.executeQuery("SELECT * FROM dbsputify.user");	//For test purpose only
 		
 		loadUsers(rsUsers);
 		
@@ -96,13 +96,8 @@ public class DataStorage {
 					rsUsers.getInt("id"),
 					rsUsers.getString("name"),
 					rsUsers.getString("password"),
-					//rsUsers.getInt("userId"),
-					//rsUsers.getString("userName"),
-					//rsUsers.getString("userPassword"),
 					rsUsers.getString("screenName"));
-			
-			
-			//addUserToMapTree(rsUsers.getInt("userId"), aUser);
+		
 			addUserToMapTree(rsUsers.getInt("id"), aUser);
         }
 	}
@@ -129,96 +124,96 @@ public class DataStorage {
 	 * Read in audio file
 	 * @param fileName
 	 */
-	public static byte[] loadAudioFile(String fileName) {
-		
-		int totalFramesRead = 0;
-		File fileIn = new File(fileName);
-		byte[] audioBytes = null;
-		// somePathName is a pre-existing string whose value was
-		// based on a user selection.
-		try {
-		  AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(fileIn);
-		  int bytesPerFrame = audioInputStream.getFormat().getFrameSize();
-		    if (bytesPerFrame == AudioSystem.NOT_SPECIFIED) {
-		    // some audio formats may have unspecified frame size
-		    // in that case we may read any amount of bytes
-		    bytesPerFrame = 1;
-		  } 
-		  // Set an arbitrary buffer size of 1024 frames.
-		  int numBytes = 1024 * bytesPerFrame; 
-		  audioBytes = new byte[numBytes];
-		  try {
-		    int numBytesRead = 0;
-		    int numFramesRead = 0;
-		    // Try to read numBytes bytes from the file.
-		    while ((numBytesRead = audioInputStream.read(audioBytes)) != -1) {
-		      // Calculate the number of frames actually read.
-		      numFramesRead = numBytesRead / bytesPerFrame;
-		      totalFramesRead += numFramesRead;
-		      // Here, do something useful with the audio data that's 
-		      // now in the audioBytes array...
-		    }
-		    
-		   
-		  
-		  } catch (IOException e1) {
-				System.out.println(e1);
-		  }
-			
-		} catch (IOException | UnsupportedAudioFileException e) {
-			System.out.println(e);
-		}
-		 return audioBytes;
-		
-	}
-
-	/**
-	 * Read in audio file
-	 * @param trackId
-	 */
-	public static byte[] loadAudioFile(Integer trackId) {
-		
-		int totalFramesRead = 0;
-		//File fileIn = new File(getTrack(trackId).getLocation());
-		File fileIn = new File("wavfiles/finishhim.wav");
-		byte[] audioBytes = null;
-		// somePathName is a pre-existing string whose value was
-		// based on a user selection.
-		try {
-		  AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(fileIn);
-		  int bytesPerFrame = audioInputStream.getFormat().getFrameSize();
-		    if (bytesPerFrame == AudioSystem.NOT_SPECIFIED) {
-		    // some audio formats may have unspecified frame size
-		    // in that case we may read any amount of bytes
-		    bytesPerFrame = 1;
-		  } 
-		  // Set an arbitrary buffer size of 1024 frames.
-		  int numBytes = 1024 * bytesPerFrame; 
-		  audioBytes = new byte[numBytes];
-		  try {
-		    int numBytesRead = 0;
-		    int numFramesRead = 0;
-		    // Try to read numBytes bytes from the file.
-		    while ((numBytesRead = audioInputStream.read(audioBytes)) != -1) {
-		      // Calculate the number of frames actually read.
-		      numFramesRead = numBytesRead / bytesPerFrame;
-		      totalFramesRead += numFramesRead;
-		      // Here, do something useful with the audio data that's 
-		      // now in the audioBytes array...
-		    }
-		    
-		   
-		  
-		  } catch (IOException e) {
-			  e.printStackTrace();
-		  }
-			
-		} catch (IOException | UnsupportedAudioFileException e) {
-			 e.printStackTrace();
-		}
-		 return audioBytes;
-		
-	}
+//	public static byte[] loadAudioFile(String fileName) {
+//		
+//		int totalFramesRead = 0;
+//		File fileIn = new File(fileName);
+//		byte[] audioBytes = null;
+//		// somePathName is a pre-existing string whose value was
+//		// based on a user selection.
+//		try {
+//		  AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(fileIn);
+//		  int bytesPerFrame = audioInputStream.getFormat().getFrameSize();
+//		    if (bytesPerFrame == AudioSystem.NOT_SPECIFIED) {
+//		    // some audio formats may have unspecified frame size
+//		    // in that case we may read any amount of bytes
+//		    bytesPerFrame = 1;
+//		  } 
+//		  // Set an arbitrary buffer size of 1024 frames.
+//		  int numBytes = 1024 * bytesPerFrame; 
+//		  audioBytes = new byte[numBytes];
+//		  try {
+//		    int numBytesRead = 0;
+//		    int numFramesRead = 0;
+//		    // Try to read numBytes bytes from the file.
+//		    while ((numBytesRead = audioInputStream.read(audioBytes)) != -1) {
+//		      // Calculate the number of frames actually read.
+//		      numFramesRead = numBytesRead / bytesPerFrame;
+//		      totalFramesRead += numFramesRead;
+//		      // Here, do something useful with the audio data that's 
+//		      // now in the audioBytes array...
+//		    }
+//		    
+//		   
+//		  
+//		  } catch (IOException e1) {
+//				System.out.println(e1);
+//		  }
+//			
+//		} catch (IOException | UnsupportedAudioFileException e) {
+//			System.out.println(e);
+//		}
+//		 return audioBytes;
+//		
+//	}
+//
+//	/**
+//	 * Read in audio file
+//	 * @param trackId
+//	 */
+//	public static byte[] loadAudioFile(Integer trackId) {
+//		
+//		int totalFramesRead = 0;
+//		//File fileIn = new File(getTrack(trackId).getLocation());
+//		File fileIn = new File("wavfiles/finishhim.wav");
+//		byte[] audioBytes = null;
+//		// somePathName is a pre-existing string whose value was
+//		// based on a user selection.
+//		try {
+//		  AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(fileIn);
+//		  int bytesPerFrame = audioInputStream.getFormat().getFrameSize();
+//		    if (bytesPerFrame == AudioSystem.NOT_SPECIFIED) {
+//		    // some audio formats may have unspecified frame size
+//		    // in that case we may read any amount of bytes
+//		    bytesPerFrame = 1;
+//		  } 
+//		  // Set an arbitrary buffer size of 1024 frames.
+//		  int numBytes = 1024 * bytesPerFrame; 
+//		  audioBytes = new byte[numBytes];
+//		  try {
+//		    int numBytesRead = 0;
+//		    int numFramesRead = 0;
+//		    // Try to read numBytes bytes from the file.
+//		    while ((numBytesRead = audioInputStream.read(audioBytes)) != -1) {
+//		      // Calculate the number of frames actually read.
+//		      numFramesRead = numBytesRead / bytesPerFrame;
+//		      totalFramesRead += numFramesRead;
+//		      // Here, do something useful with the audio data that's 
+//		      // now in the audioBytes array...
+//		    }
+//		    
+//		   
+//		  
+//		  } catch (IOException e) {
+//			  e.printStackTrace();
+//		  }
+//			
+//		} catch (IOException | UnsupportedAudioFileException e) {
+//			 e.printStackTrace();
+//		}
+//		 return audioBytes;
+//		
+//	}
 
 	
 //	NOT USED
@@ -285,8 +280,8 @@ public class DataStorage {
 	public static void connect() throws SQLException {
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            //connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/dbsputify","root","Mornar22!0");
-            connection = DriverManager.getConnection("jdbc:mysql://195.178.232.7:4040/AC9574","AC9574","Sputify7");
+            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/dbsputify","root","Mornar22!0");
+            //connection = DriverManager.getConnection("jdbc:mysql://195.178.232.7:4040/AC9574","AC9574","Sputify7");
             statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
         } catch(ClassNotFoundException e1) {
             System.out.println("Databas-driver hittades ej: "+e1);
