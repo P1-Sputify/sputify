@@ -72,17 +72,36 @@ public class KlientTest {
 				Socket socket = new Socket(InetAddress.getByName(serverIP),	serverPort);
 				ObjectInputStream input = new ObjectInputStream(socket.getInputStream());
 				ObjectOutputStream output = new ObjectOutputStream(socket.getOutputStream());
+				String message;
+				Object recievedObject;
 				
-				
-				output.writeObject(new String[] {"User1","Pwd1"});
+				output.writeObject(new String[] {"Sebastian Aspegren","Nethakaaru"});
 				output.flush();
 				System.out.println("<< Username & pass sent to server");
 
-				System.out.println(">> Create hashtable object for song list");
-				Hashtable<Integer, Track> htClient = (Hashtable<Integer, Track>) input.readObject();
+				recievedObject = input.readObject();
+				if(recievedObject instanceof String){
+					message = (String)recievedObject;
+					System.out.println(message);
+				}
 				
-				System.out.println("<< Song list received from server");
-			
+				System.out.println();
+				
+				System.out.println(">> Request song list from server");
+				output.writeObject("Send playlist");
+				
+				Hashtable<Integer, Track> htClient = null;
+				recievedObject = input.readObject();
+				if(recievedObject instanceof String){
+					message = (String)recievedObject;
+					System.out.println(message);
+					return;
+				} else {
+					System.out.println(">> Create hashtable object for song list");
+					htClient = (Hashtable<Integer, Track>) recievedObject;
+					System.out.println("<< Song list received from server");
+				}
+				
 				for (Integer key : htClient.keySet()) {
 				   System.out.println(htClient.get(key));
 				}
@@ -96,16 +115,19 @@ public class KlientTest {
 				System.out.println(">> Read in byte array as object");
 				Object object= input.readObject();
 				//byte[] sound = (byte[]) input.readObject();
-				System.out.println(">> Byte array object created");
 				
 				System.out.println(">> Create byte array from object");
 				byte[] sound = (byte[]) object;
+				System.out.println(">> Byte array object created");
 			    	//JOptionPane.showMessageDialog(null, sound);
 			    	//InputStream myInputStream = new ByteArrayInputStream(sound);
-			    	
-		    	System.out.println(">> Play the sound");
-				playSound(sound);
-				System.out.println(">> Sound played");
+			    
+				System.out.println(">> The client processing of audio file.");
+				output.writeObject("The audio file is received.");
+				output.flush();
+		    	//System.out.println(">> Play the sound");
+				//playSound(sound);
+				//System.out.println(">> Sound played");
 			
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -119,6 +141,7 @@ public class KlientTest {
 
 	public static void main(String[] args) {
 		
-		new KlientTest("127.0.0.1", 57005);
+		//new KlientTest("10.2.22.157", 57005);
+		new KlientTest("localhost", 57005);
 	}
 }
