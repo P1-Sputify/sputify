@@ -3,39 +3,45 @@
  */
 package server;
 
-import java.io.Serializable;
-
 /**
- * @author mehmedagica
+ * @authors mehmedagica, Sebastian Aspegren
  * 
  * A class representing a song/track. The track had an id, a name, an artist, a length and an album it belongs to.
  * Added a line to class description
  *
  */
-public class Track implements Serializable {
+public class Track {
 	
-	private int id;
+	private String id;
 	private String name;
 	private String artist;
 	//The length of the track measured in seconds.
 	private int length;
 	private String album;
+	//Where the file is located on the harddrive. AKA the file path.
 	private String location;
 	
-	public Track(int id, String name, String artist, int time, String album, String location){
-		this.id = id;
-		this.name = name;
-		this.artist = artist;
-		this.length = time;
-		this.album = album;
-		this.location = location;
+	public Track(String id, String artist, String name,String album,  int time, String location ){
+		this.id=id;
+		this.name=name;
+		this.artist=artist;
+		this.album=album;
+		this.length=time;
+		this.location=location;
 		
+	}
+	/**
+	 * 
+	 * @return the location
+	 */
+	public String getLocation() {
+		return location;
 	}
 
 	/**
 	 * @return the id
 	 */
-	public int getId() {
+	public String getId() {
 		return id;
 	}
 
@@ -66,21 +72,13 @@ public class Track implements Serializable {
 	public String getAlbum() {
 		return album;
 	}
-	
-	/**
-	 * 
-	 * @return the location
-	 */
-	public String getLocation() {
-		return location;
-	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
+	/**
+	 * @return A string with information regarding the track.
 	 */
-	@Override
 	public String toString() {
-		return "Track [id=" + id + ", name=" + name + ", artist=" + artist + ", length=" + length + ", album=" + album  + ", location=" + location + "]";
+		return "Track [Name = " + name + ", Artist = " + artist
+				+ ", length = " + length + " seconds" + ", album = " + album + "]";
 	}
 	
 

@@ -15,16 +15,11 @@ import javax.sound.sampled.UnsupportedAudioFileException;
  * 
  */
 public class Controller {
-	 private DataStorage ds;
-	 private Server newServer;
+	
 	
 	public Controller() {
-		this.ds = new DataStorage();
-		this.newServer = new Server(57005);
-	}
-	
-	public static void main(String[] args) {
-		new Controller();
+		
+		
 	}
 	
 	/**
@@ -59,35 +54,36 @@ public class Controller {
 		      totalFramesRead += numFramesRead;
 		      // Here, do something useful with the audio data that's 
 		      // now in the audioBytes array...
-		    } 
+		    }
+		    
+		   
 		  
-		  } catch (IOException e) {
-			  e.printStackTrace();
+		  } catch (IOException e1) {
+				System.out.println(e1);
 		  }
 			
 		} catch (IOException | UnsupportedAudioFileException e) {
-			e.printStackTrace();
+			System.out.println(e);
 		}
 		 return audioBytes;
 		
 	}
-	public static void loadwavfile(String inFile){
-		File file= new File(inFile);
-		try {
-			DataInputStream DIS= new DataInputStream(new FileInputStream(file));
-			byte test=0;
-		int counter=0;
 
-			while(DIS.available()>1){
-			//	test=DIS.readShort();
-				test=DIS.readByte();
-				counter++;
-//				if(test<0)
-//					test=-test;	
 
-					System.out.print(test + ", ");
-					
-				}
-			System.out.print(counter);
-//			
+	/**
+	 * A method used to verify the user by comparing the given username and
+	 * password to the ones in the dataStorage.
+	 * 
+	 * @param userName
+	 *            The username we want to verify and compare.
+	 * @param password
+	 *            The password we want to verify and compare.
+	 * 
+	 * @return True if the user exists. False if the user was not found.
+	 */
+	public boolean verifyUser(String userName, String password) {
+
+		return false;
+
+	}
 }
