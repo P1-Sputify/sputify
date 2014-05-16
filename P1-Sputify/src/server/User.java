@@ -4,19 +4,19 @@
 package server;
 
 /**
- * @authors mehmedagica, Sebastian Aspegren
+ * @author mehmedagica
  *
  */
 public class User {
 
-	private String id;
+	private int id;
 	//The users real name.
 	private String name;
 	private String password;
 	//The name the user has chosen as what is commonly known as the "username".
 	private String screenName;
 	
-	public User(String id, String name, String password, String screenName){
+	public User(int id, String name, String password, String screenName){
 		this.id=id;
 		this.name=name;
 		this.password=password;
@@ -26,7 +26,7 @@ public class User {
 	/**
 	 * @return the id
 	 */
-	public String getId() {
+	public int getId() {
 		return id;
 	}
 
@@ -51,9 +51,10 @@ public class User {
 		return screenName;
 	}
 
-	/**
-	 * @return A string with information regarding the user.
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
 	 */
+	@Override
 	public String toString() {
 		return "User [id=" + id + ", name=" + name + ", password=" + password
 				+ ", screenName=" + screenName + "]";
