@@ -3,7 +3,9 @@
  */
 package server;
 
+import java.io.DataInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 
 import javax.sound.sampled.AudioInputStream;
@@ -71,4 +73,31 @@ public class Controller {
 		 return audioBytes;
 		
 	}
+	/**
+	 * A method that reads a wav file and returns the amplitude of it in bytes.
+	 * @param inFile
+	 */
+	public static void loadwavfile(String inFile){
+		 		File file= new File(inFile);
+		 		try {
+		 			DataInputStream DIS= new DataInputStream(new FileInputStream(file));
+		 			//short test=0;
+		 			byte test=0;
+		 		int counter=0;
+		 
+		 			while(DIS.available()>1){
+		 			//	test=DIS.readShort();
+		 				test=DIS.readByte();
+		 				counter++;
+		 		//		if(test<0)
+		 		//			test=-test;	
+		 
+		 				System.out.print(test + ", ");
+		 					
+		 				}
+		 			System.out.print(counter);
+		 		}catch(Exception e){
+		 			
+		 		}
+		  }
 }
