@@ -71,4 +71,23 @@ public class Controller {
 		 return audioBytes;
 		
 	}
+	public static void loadwavfile(String inFile){
+		File file= new File(inFile);
+		try {
+			DataInputStream DIS= new DataInputStream(new FileInputStream(file));
+			byte test=0;
+		int counter=0;
+
+			while(DIS.available()>1){
+			//	test=DIS.readShort();
+				test=DIS.readByte();
+				counter++;
+//				if(test<0)
+//					test=-test;	
+
+					System.out.print(test + ", ");
+					
+				}
+			System.out.print(counter);
+//			
 }
