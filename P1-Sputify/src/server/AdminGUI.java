@@ -4,9 +4,12 @@
 package server;
 
 import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -15,11 +18,14 @@ import javax.swing.JTextField;
  * @author Nethakaaru
  * 
  */
-public class AdminGUI extends JFrame {
+public class AdminGUI extends JFrame implements ActionListener {
 
 	private Controller controller;
 	private JTextArea txtArea = new JTextArea();
 	private JTextField IPandPort = new JTextField("Server created on IP: " + getIP() + " and port: 57005");
+	private JButton toggleServerbtn= new JButton("Turn on server");
+	//A boolean that is false if the server is off and true if the server is on.
+	private boolean isServerOn=false;
 
 	public AdminGUI(Controller controller) {
 		this.controller = controller;
@@ -34,6 +40,7 @@ public class AdminGUI extends JFrame {
 
 		add(txtArea, BorderLayout.CENTER);
 		add(IPandPort, BorderLayout.NORTH);
+		add(toggleServerbtn,BorderLayout.WEST);
 		IPandPort.setEditable(false);
 		txtArea.setEditable(false);
 	}
@@ -70,6 +77,18 @@ public class AdminGUI extends JFrame {
 			addToTextArea(e.getMessage());
 		}
 		return "UNKNOWN";
+		
+	}
+	
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+//		if(e.getSource()==toggleServerbtn){
+//			if(isServerOn)
+//				controller.turnoffserver();
+//			else 
+//				controller.turnonserver();
+//		}
 		
 	}
 }
