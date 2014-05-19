@@ -42,6 +42,7 @@ public class Server {
 		// Handles client connection-give me a thread
 		Thread connectThread = new Thread(new Connect());
 		connectThread.start();
+		
 	//	System.out.println("A connect thread created and started...");
 		adminGUI.appendText("A connect thread created and started...");
 	}
@@ -68,10 +69,10 @@ public class Server {
 			// Thread clientListener;
 
 			try {
-				InetAddress host = InetAddress.getLocalHost();
+			//	InetAddress host = InetAddress.getLocalHost();
 				serverSocket = new ServerSocket(port);
 		//		System.out.println("Server socket with IP " + host.getHostAddress() + " created on port " + port);
-				adminGUI.appendText("Server socket with IP " + host.getHostAddress() + " created on port " + port);
+				adminGUI.appendText("Server socket with IP " + getIP() + " created on port " + port);
 
 				while (true) {
 					socket = serverSocket.accept();
@@ -346,27 +347,47 @@ public class Server {
 	 * @param inFile
 	 */
 	public static void loadwavfile(String inFile) {
+		//Turn the path into a file
  		File file= new File(inFile);
  		try {
  			DataInputStream DIS= new DataInputStream(new FileInputStream(file));
  			//short test=0;
  			byte test=0;
  		int counter=0;
- 
+ 		//while there is more to read from the inputStream
  			while(DIS.available()>1){
  			//	test=DIS.readShort();
  				test=DIS.readByte();
  				counter++;
  		//		if(test<0)
  		//			test=-test;	
- 
+ //print out the byte and a ","
  				System.out.print(test + ", ");
  					
  				}
+ 			//print out the amount of bytes printed out.
  			System.out.print(counter);
+ 			DIS.close();
  		}catch(Exception e){
  			
  		}
+	}
+	/**
+	 * A method that returns the ip of the server.
+	 * 
+	 * @return the servers ip address.
+	 */
+	public String getIP() {
+		InetAddress host;
+		try {
+			host = InetAddress.getLocalHost();
+			return host.getHostAddress();
+		} catch (UnknownHostException e) {
+
+			adminGUI.appendText(e.getMessage());
+		}
+		return "UNKNOWN";
+
 	}
 
 	 /** The main method for the server.
