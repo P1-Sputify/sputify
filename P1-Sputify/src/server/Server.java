@@ -34,13 +34,16 @@ public class Server {
 		this.adminGUI = new AdminGUI(this);
 		this.port = port;
 
-		System.out.println("Server started");
-		JOptionPane.showMessageDialog(null, "Server started");
-		System.out.println("Server waiting for client connections...");
+	//	System.out.println("Server started");
+		adminGUI.appendText("Server started");
+	//	JOptionPane.showMessageDialog(null, "Server started");
+		//System.out.println("Server waiting for client connections...");
+		adminGUI.appendText("Server waiting for client connections...");
 		// Handles client connection-give me a thread
 		Thread connectThread = new Thread(new Connect());
 		connectThread.start();
-		System.out.println("A connect thread created and started...");
+	//	System.out.println("A connect thread created and started...");
+		adminGUI.appendText("A connect thread created and started...");
 	}
 	
 
@@ -67,15 +70,19 @@ public class Server {
 			try {
 				InetAddress host = InetAddress.getLocalHost();
 				serverSocket = new ServerSocket(port);
-				System.out.println("Server socket with IP " + host.getHostAddress() + " created on port " + port);
+		//		System.out.println("Server socket with IP " + host.getHostAddress() + " created on port " + port);
+				adminGUI.appendText("Server socket with IP " + host.getHostAddress() + " created on port " + port);
+
 				while (true) {
 					socket = serverSocket.accept();
-					System.out.println("Server socket accept client");
+//					System.out.println("Server socket accept client");
+					adminGUI.appendText("Server socket accept client");
 					clientThread = new Thread(new TalkToClient(socket));
 					// clientListener = new Thread(new ListenToClient(socket));
 					clientThread.start();
 					// clientListener.start();
-					System.out.println("A new client thread created and started");
+//					System.out.println("A new client thread created and started");
+					adminGUI.appendText("A new client thread created and started");
 				}
 			} catch (IOException e1) {
 				System.out.println(e1);
@@ -115,14 +122,18 @@ public class Server {
 
 			try {
 				// Have to use it to send data to the client
-				System.out.println(">> Creating Object Output Stream");
+//				System.out.println(">> Creating Object Output Stream");
+				adminGUI.appendText(">> Creating Object Output Stream");
 				ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
 				System.out.println(">> Object Output Stream created");
+				adminGUI.appendText(">> Creating Object Output Stream");
 
 				// Have to use it to receive data from the client
-				System.out.println(">> Creating Object Input Stream");
+//				System.out.println(">> Creating Object Input Stream");
+				adminGUI.appendText(">> Creating Object Input Stream");
 				ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
-				System.out.println(">> Object input stream created");
+//				System.out.println(">> Object input stream created");
+				adminGUI.appendText(">> Object input stream created");
 
 				Object recievedObject;
 				String message;
@@ -135,28 +146,34 @@ public class Server {
 
 					if (recievedObject instanceof String[]) {
 						loginArray = (String[]) recievedObject;
-						System.out.println("<< User login received: " + loginArray[0] + " " + loginArray[1]);
+//						System.out.println("<< User login received: " + loginArray[0] + " " + loginArray[1]);
+						adminGUI.appendText("<< User login received: " + loginArray[0] + " " + loginArray[1]);
 						if (DataStorage.verifyUser(loginArray[0], loginArray[1])) {
 							loggedIn = true;
 							oos.writeObject("login success");
-							System.out.println(">> Sent login success message");
+//							System.out.println(">> Sent login success message");
+							adminGUI.appendText(">> Sent login success message");
 						} else {
 							loggedIn = false;
 							loginArray = null;
 							oos.writeObject("login failed");
-							System.out.println(">> Sent login failed message");
+//							System.out.println(">> Sent login failed message");
+							adminGUI.appendText(">> Sent login failed message");
 						}
 					} else if (recievedObject instanceof String) {
 						message = (String) recievedObject;
 						if (message.equalsIgnoreCase("send playlist")) {
 							if (loggedIn) {
 								Hashtable<Integer, Track> songList = DataStorage.tracks;
-								System.out.println(">> Create Track list and send it to the client as Hash Table");
+//								System.out.println(">> Create Track list and send it to the client as Hash Table");
+								adminGUI.appendText(">> Create Track list and send it to the client as Hash Table");
 								oos.writeObject(songList);
 								oos.flush();
-								System.out.println(">> Track list sent to the client");
+//								System.out.println(">> Track list sent to the client");
+								adminGUI.appendText(">> Track list sent to the client");
 							} else {
-								System.out.println(">> ERROR! Incorrect login name and/or password");
+//								System.out.println(">> ERROR! Incorrect login name and/or password");
+								adminGUI.appendText(">> ERROR! Incorrect login name and/or password");
 								oos.writeObject("not logged in");
 							}
 						} else if (message.equalsIgnoreCase("logout")) {
@@ -164,23 +181,27 @@ public class Server {
 							loginArray = null;
 							oos.writeObject("logged out");
 						} else {
-							System.out.println(message);
+//							System.out.println(message);
+							adminGUI.appendText(message);
 						}
 					} else if (recievedObject instanceof Integer) {
 						Integer trackId = (Integer) recievedObject;
-						System.out.println("<< Track ID received");
+//						System.out.println("<< Track ID received");
+						adminGUI.appendText("<< Track ID received");
 
 						if (trackId > 0) {
 							// Send the audio file to the client
 							oos.writeObject(loadAudioFile(DataStorage.getTrack(trackId).getLocation()));
 							oos.flush();
-							System.out.println("File sent to the client");
+//							System.out.println("File sent to the client");
+							adminGUI.appendText("File sent to the client");
 						}
 					}
 				}
 			} catch (Exception e) {
 				if(e.getClass().getName().contains("SocketException"))
-					System.out.println(">>The client reseted connection or client socket fails of some reason.");
+//					System.out.println(">>The client reseted connection or client socket fails of some reason.");
+				adminGUI.appendText(">>The client reseted connection or client socket fails of some reason.");
 				else
 					e.printStackTrace();
 			}

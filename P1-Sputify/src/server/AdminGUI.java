@@ -25,7 +25,7 @@ public class AdminGUI extends JFrame implements ActionListener {
 	private JTextArea txtArea = new JTextArea();
 	private JTextField IPandPort = new JTextField("Server created on IP: "
 			+ getIP() + " and port: 57005");
-	private JButton toggleServerbtn = new JButton("Turn on server");
+	private JButton toggleServerbtn = new JButton("Restart server");
 	// A boolean that is false if the server is off and true if the server is
 	// on.
 	private boolean isServerOn = false;
@@ -56,9 +56,9 @@ public class AdminGUI extends JFrame implements ActionListener {
 	 * @param inStr
 	 *            the info we wish to add to the "console".
 	 */
-	public void addToTextArea(String inStr) {
+	public void appendText(String inStr) {
 		txtArea.setEditable(true);
-		txtArea.append(inStr);
+		txtArea.append(inStr + "\n");
 		txtArea.setEditable(false);
 	}
 
@@ -86,7 +86,7 @@ public class AdminGUI extends JFrame implements ActionListener {
 			return host.getHostAddress();
 		} catch (UnknownHostException e) {
 
-			addToTextArea(e.getMessage());
+			appendText(e.getMessage());
 		}
 		return "UNKNOWN";
 
@@ -103,8 +103,4 @@ public class AdminGUI extends JFrame implements ActionListener {
 
 	}
 	
-//	public static void main(String[] args) {
-//		AdminGUI gui = new AdminGUI(null);
-//
-//	}
 }
