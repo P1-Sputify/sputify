@@ -86,7 +86,8 @@ public class Server {
 					adminGUI.appendText("A new client thread created and started");
 				}
 			} catch (IOException e1) {
-				System.out.println(e1);
+//				System.out.println(e1);
+				adminGUI.appendText(e1.getMessage());
 			}
 
 			try {
@@ -126,8 +127,8 @@ public class Server {
 //				System.out.println(">> Creating Object Output Stream");
 				adminGUI.appendText(">> Creating Object Output Stream");
 				ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
-				System.out.println(">> Object Output Stream created");
-				adminGUI.appendText(">> Creating Object Output Stream");
+//				System.out.println(">> Object Output Stream created");
+				adminGUI.appendText(">> Object Output Stream created");
 
 				// Have to use it to receive data from the client
 //				System.out.println(">> Creating Object Input Stream");
@@ -205,12 +206,14 @@ public class Server {
 				adminGUI.appendText(">>The client reseted connection or client socket fails of some reason.");
 				else
 					e.printStackTrace();
+				adminGUI.appendText(e.getMessage());
 			}
 
 			try {
 				socket.close();
 			} catch (IOException e) {
 				e.printStackTrace();
+				adminGUI.appendText(e.getMessage());
 			}
 		}
 	}
