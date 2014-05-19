@@ -23,27 +23,26 @@ public class AdminGUI extends JFrame implements ActionListener {
 
 	private Server server;
 	private JTextArea txtArea = new JTextArea();
-	private JTextField IPandPort = new JTextField("Server created on IP: "
-			+ getIP() + " and port: 57005");
+	private JTextField IPandPort;
 	private JButton toggleServerbtn = new JButton("Restart server");
-	// A boolean that is false if the server is off and true if the server is
-	// on.
-	private boolean isServerOn = false;
 
 	public AdminGUI(Server server) {
 		this.server = server;
 		setupGUI();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);
+		
 	}
 
 	public void setupGUI() {
 		setBounds(100, 100, 800, 300);
 		setLayout(new BorderLayout());
-
+		IPandPort = new JTextField("Server created on IP: "
+				+ server.getIP() + " and port: 57005");
 		add(txtArea, BorderLayout.CENTER);
 		add(IPandPort, BorderLayout.NORTH);
 		add(toggleServerbtn, BorderLayout.WEST);
+		toggleServerbtn.addActionListener(this);
 		IPandPort.setEditable(false);
 		txtArea.setEditable(false);
 	}
@@ -62,43 +61,23 @@ public class AdminGUI extends JFrame implements ActionListener {
 		txtArea.setEditable(false);
 	}
 
-	/**
-	 * A method that edits the ip and port text field.
-	 * 
-	 * @param inStr
-	 *            what the ip and port text field should say.
-	 */
-	public void setIPandPort(String inStr) {
-		IPandPort.setEditable(true);
-		IPandPort.setText(inStr);
-		IPandPort.setEditable(false);
-	}
+//	/**
+//	 * A method that edits the ip and port text field.
+//	 * 
+//	 * @param inStr
+//	 *            what the ip and port text field should say.
+//	 */
+//	public void setIPandPort(String inStr) {
+//		IPandPort.setEditable(true);
+//		IPandPort.setText(inStr);
+//		IPandPort.setEditable(false);
+//	}
 
-	/**
-	 * A method that returns the ip of the server.
-	 * 
-	 * @return the servers ip address.
-	 */
-	public String getIP() {
-		InetAddress host;
-		try {
-			host = InetAddress.getLocalHost();
-			return host.getHostAddress();
-		} catch (UnknownHostException e) {
 
-			appendText(e.getMessage());
-		}
-		return "UNKNOWN";
-
-	}
 
 	public void actionPerformed(ActionEvent e) {
 		 if(e.getSource()==toggleServerbtn){
-		 if(isServerOn){
-		// server.turnoffserver();
-		 } else{
-		// server.turnonserver();
-		 	}
+//		server.restart();  //this method does not exist yet.
 		 }
 
 	}
