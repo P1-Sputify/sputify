@@ -23,7 +23,18 @@ public class DataStorage {
 	
 	public static Connection connection;
     public static Statement statement;
+    
+    ResultSet rsTracks;
+    ResultSet rsUsers;
+    
+    //String dbName = "ac9574";
+    String dbName = "dbsputify";
 	
+    /**
+     * Constructor
+     * Create data structures for audio tracks and users
+     * And populate them with data from database
+     */
 	public DataStorage() {
 		
 		try {
@@ -31,24 +42,39 @@ public class DataStorage {
 			tracks = new Hashtable<Integer, Track>(100);
 			users = new TreeMap<Integer, User>();
 			
-			getResultSetsAndData();
+			getTracks();
+			
+			getUsers();
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
 	
-	public void getResultSetsAndData() throws SQLException {
+	/**
+	 * Create result sets and get data from database 
+	 * @throws SQLException
+	 */
+	public void getTracks() throws SQLException {
 		
 		connect();
 		
-		ResultSet rsTracks = statement.executeQuery("SELECT * FROM ac9574.track");
-//		ResultSet rsTracks = statement.executeQuery("SELECT * FROM dbsputify.track");	//For test purpose only
+		rsTracks = statement.executeQuery("SELECT * FROM " + dbName + ".track");
 		
 		loadTracks(rsTracks);
 		
-		ResultSet rsUsers = statement.executeQuery("SELECT * FROM ac9574.user");
-//		ResultSet rsUsers = statement.executeQuery("SELECT * FROM dbsputify.user");	//For test purpose only
+		disconnect();
+	}
+	
+	/**
+	 * Create result sets and get data from database 
+	 * @throws SQLException
+	 */
+	public void getUsers() throws SQLException {
+		
+		connect();
+		
+		rsUsers = statement.executeQuery("SELECT * FROM " + dbName + ".user");
 		
 		loadUsers(rsUsers);
 		
@@ -110,7 +136,7 @@ public class DataStorage {
 	public void addTrackToHashTable(Integer trackId, Track trackData) {
 		tracks.put(trackId, trackData);
 	}
-
+	
 	/**
 	 * Add a User to the MapTree
 	 * @param userId, int, user ID
@@ -120,8 +146,87 @@ public class DataStorage {
 		users.put(userId, userData);
 	}
 	
-//	User verification will be done in the controller
-//	TreeMap containing users is done as static and accessible by controller	
+	/**
+	 * Update a track
+	 * @param trackId
+	 * @param trackData
+	 * @throws SQLException
+	 */
+	public void updateATrack(Integer trackId, Track trackData) throws SQLException {
+		
+		connect();
+		
+		statement.executeUpdate("UPDATE " + dbName + ".track SET" +
+								" trackName = " + trackData.getName() +
+								" artist = " + trackData.getArtist() +
+								" length = " + trackData.getLength() +
+								" album = " + trackData.getAlbum() +
+								" location = " + trackData.getLocation() +
+								" WHERE id=" + trackId);
+		
+		disconnect();
+		
+		getTracks();
+	}
+	
+	/**
+	 * Update a user
+	 * @param userId
+	 * @param userData
+	 * @throws SQLException
+	 */
+	public void updateAUser(Integer userId, User userData) throws SQLException {
+		
+		connect();
+		
+		statement.executeUpdate("UPDATE " + dbName + ".track SET" +
+								" name = " + userData.getName() +
+								" password = " + userData.getPassword() +
+								" screenName = " + userData.getScreenName() +
+								" WHERE id=" + userId);
+		
+		disconnect();
+		
+		getUsers();
+		
+	}
+	
+	/**
+	 * Delete a track
+	 * @param trackId
+	 * @throws SQLException
+	 */
+	public void deleteATrack(Integer trackId) throws SQLException {
+		
+		connect();
+		
+		statement.executeUpdate("DELETE FROM " + dbName + ".track" +
+								" WHERE id=" + trackId);
+		
+		disconnect();
+		
+		getTracks();
+	}
+	
+	/**
+	 * Delete a user
+	 * @param userId
+	 * @throws SQLException
+	 */
+	public void deleteAUser(Integer userId) throws SQLException {
+		
+		connect();
+		
+		statement.executeUpdate("DELETE FROM " + dbName + ".track" +
+								" WHERE id=" + userId);
+		
+		disconnect();
+		
+		getUsers();
+		
+	}
+	
+	
 	/**
 	 * A method used to verify the user by comparing the given username and
 	 * password to the ones in the dataStorage.
@@ -183,11 +288,12 @@ public class DataStorage {
 	public static void connect() throws SQLException {
         try {
             Class.forName("com.mysql.jdbc.Driver");
-//            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/dbsputify","root","Mornar22!0");
-            connection = DriverManager.getConnection("jdbc:mysql://195.178.232.7:4040/AC9574","AC9574","Sputify7");
-            statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-        } catch(ClassNotFoundException e1) {
-            System.out.println("Databas-driver hittades ej: "+e1);
+            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/dbsputify","root","Mornar22!0");
+            //connection = DriverManager.getConnection("jdbc:mysql://195.178.232.7:4040/AC9574","AC9574","Sputify7");
+            statement = connection.createStatement();
+        } catch(ClassNotFoundException e) {
+            System.out.println("Databas-driver hittades ej: "+e);
+            e.getStackTrace();
         }
     }
     

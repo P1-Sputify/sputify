@@ -10,6 +10,7 @@ import java.io.*;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.UnsupportedAudioFileException;
+import javax.swing.*;
 
 /**
  * @authors mehmedagica, Sebastian Aspegren
@@ -33,27 +34,22 @@ public class Server {
 		this.ds = new DataStorage();
 		this.adminGUI = new AdminGUI(this);
 		this.port = port;
-
-		// Handles client connection-give me a thread
-		connectThread = new Thread(new Connect());
-		//serverStart();
-	connectThread.start();
-		
 	}
-	
-	
+		
 	public void serverStart() {
+		connectThread = new Thread(new Connect());
 		connectThread.start();
 		//System.out.println("Server started");
 		adminGUI.appendText("Server started");
 	}
 	
 	public void serverStop() {
+		
 		connectThread.interrupt();
-		//System.out.println("Server stopped");
+		connectThread = null;
 		adminGUI.appendText("Server stopped");
+		
 	}
-	
 
 	/**
 	 * A private class representing the connection between the client and the
@@ -76,20 +72,17 @@ public class Server {
 			// Thread clientListener;
 
 			try {
-			//	InetAddress host = InetAddress.getLocalHost();
+				//InetAddress host = InetAddress.getLocalHost();
 				serverSocket = new ServerSocket(port);
-		//		System.out.println("Server socket with IP " + host.getHostAddress() + " created on port " + port);
+				//System.out.println("Server socket with IP " + host.getHostAddress() + " created on port " + port);
 				adminGUI.appendText("Server socket with IP " + getIP() + " created on port " + port);
 
 				while (true) {
-					adminGUI.appendText("Waiting for clients to connect...");
 					socket = serverSocket.accept();
 //					System.out.println("Server socket accept client");
 					adminGUI.appendText("Server socket accept client");
 					clientThread = new Thread(new TalkToClient(socket));
-					// clientListener = new Thread(new ListenToClient(socket));
 					clientThread.start();
-					// clientListener.start();
 //					System.out.println("A new client thread created and started");
 					adminGUI.appendText("A new client thread created and started");
 				}
@@ -226,87 +219,6 @@ public class Server {
 		}
 	}
 
-	/**
-	 * A class used to listen to input from the client.
-	 * 
-	 * @author Sebastian Aspegren
-	 * @author Amir Mehmedagic
-	 */
-	// private class ListenToClient implements Runnable {
-	// private Socket socket;
-	// /**
-	// * The constructor for ListenToClient. Receives a socket which it uses for
-	// input.
-	// * @param socket
-	// */
-	// public ListenToClient(Socket socket) {
-	// this.socket = socket;
-	// }
-	//
-	// /**
-	// * The run method. It attempts to write what was sent from the client if
-	// it receives a specific string.
-	// */
-	// public void run() {
-	//
-	//
-	// try {
-	//
-	// //Have to use it to receive data from the client
-	// System.out.println(">> Creating Object Onput Stream");
-	// ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
-	// System.out.println(">> Object input stream created");
-	//
-	// System.out.println("<< Wait for user name and password from the client");
-	// //Get user name and password
-	// //as string array
-	// userLogin = (String[])ois.readObject();
-	// System.out.println("<< User login received: " + userLogin[0] + " " +
-	// userLogin[1]);
-	// setState("Send TrackList");
-	//
-	// System.out.println("<< Wait for track id from client...");
-	// //Wait for client to ask about a audio file
-	// Integer trackId = (Integer)ois.readObject();
-	// System.out.println("<< Track ID received");
-	// setState("Send AudioFile");
-	//
-	//
-	// // while (true) {
-	// //
-	// //
-	// // Object input = ois.readObject();
-	// // //If client sent "Halloj"
-	// // if (input.equals("Halloj")) {
-	// // System.out.println("This was sent from the client "
-	// // + input);
-	// // JOptionPane.showMessageDialog(null, input);
-	// // setState("Start");
-	// //
-	// // }
-	// //
-	// // }
-	// } catch (Exception e1) {
-	// System.out.println(e1);
-	// }
-	//
-	// try {
-	//
-	// socket.close();
-	// } catch (IOException e) {
-	// System.out.println(e);
-	// }
-	// }
-	//
-	// }
-
-	public String getState() {
-		return state;
-	}
-
-	public void setState(String state) {
-		this.state = state;
-	}
 	
 	/**
 	 * Read in audio file
@@ -383,6 +295,7 @@ public class Server {
  			
  		}
 	}
+	
 	/**
 	 * A method that returns the ip of the server.
 	 * 
@@ -393,8 +306,7 @@ public class Server {
 		try {
 			host = InetAddress.getLocalHost();
 			return host.getHostAddress();
-		} catch (UnknownHostException e) {
-
+		} catch (UnknownHostException e) {	
 			adminGUI.appendText(e.getMessage());
 		}
 		return "UNKNOWN";
@@ -405,7 +317,6 @@ public class Server {
 	 * @param args
 	 */
 	 public static void main(String[] args) {
-	
 		 new Server(57005);
 	 }
 
