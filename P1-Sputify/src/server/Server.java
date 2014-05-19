@@ -22,6 +22,7 @@ public class Server {
 	private String	state	= null;
 	private DataStorage ds;
 	private AdminGUI adminGUI;
+	private Thread connectThread;
 	
 	/**
 	 * The constructor for the server. Creates a thread with a new connect.
@@ -34,17 +35,24 @@ public class Server {
 		this.adminGUI = new AdminGUI(this);
 		this.port = port;
 
-	//	System.out.println("Server started");
-		adminGUI.appendText("Server started");
-	//	JOptionPane.showMessageDialog(null, "Server started");
-		//System.out.println("Server waiting for client connections...");
-		adminGUI.appendText("Server waiting for client connections...");
 		// Handles client connection-give me a thread
-		Thread connectThread = new Thread(new Connect());
-		connectThread.start();
+		connectThread = new Thread(new Connect());
+		//serverStart();
+
 		
-	//	System.out.println("A connect thread created and started...");
-		adminGUI.appendText("A connect thread created and started...");
+	}
+	
+	
+	public void serverStart() {
+		connectThread.start();
+		//System.out.println("Server started");
+		adminGUI.appendText("Server started");
+	}
+	
+	public void serverStop() {
+		connectThread.interrupt();
+		//System.out.println("Server stopped");
+		adminGUI.appendText("Server stopped");
 	}
 	
 

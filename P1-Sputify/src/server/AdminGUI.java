@@ -24,14 +24,15 @@ public class AdminGUI extends JFrame implements ActionListener {
 	private Server server;
 	private JTextArea txtArea = new JTextArea();
 	private JTextField IPandPort;
-	private JButton toggleServerbtn = new JButton("Restart server");
+	private JButton toggleServerbtn = new JButton("Server start");
+	private boolean isServerOn = false;
 
 	public AdminGUI(Server server) {
 		this.server = server;
 		setupGUI();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);
-		
+		toggleServerbtn.addActionListener(this);
 	}
 
 	public void setupGUI() {
@@ -77,9 +78,16 @@ public class AdminGUI extends JFrame implements ActionListener {
 
 	public void actionPerformed(ActionEvent e) {
 		 if(e.getSource()==toggleServerbtn){
-//		server.restart();  //this method does not exist yet.
+			 if(isServerOn){
+				 server.serverStop();
+				 isServerOn = false;
+				 toggleServerbtn.setText("Start server");
+			 } else{
+				 server.serverStart();
+				 isServerOn = true;
+				 toggleServerbtn.setText("Stop server");
+		 	 }
 		 }
-
 	}
 	
 }
