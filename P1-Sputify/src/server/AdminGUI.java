@@ -21,7 +21,7 @@ import javax.swing.JTextField;
  */
 public class AdminGUI extends JFrame implements ActionListener {
 
-	private Controller controller;
+	private Server server;
 	private JTextArea txtArea = new JTextArea();
 	private JTextField IPandPort = new JTextField("Server created on IP: "
 			+ getIP() + " and port: 57005");
@@ -30,8 +30,8 @@ public class AdminGUI extends JFrame implements ActionListener {
 	// on.
 	private boolean isServerOn = false;
 
-	public AdminGUI(Controller controller) {
-		this.controller = controller;
+	public AdminGUI(Server server) {
+		this.server = server;
 		setupGUI();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);
@@ -95,15 +95,16 @@ public class AdminGUI extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		 if(e.getSource()==toggleServerbtn){
 		 if(isServerOn){
-		// controller.turnoffserver();
+		// server.turnoffserver();
 		 } else{
-		// controller.turnonserver();
+		// server.turnonserver();
 		 	}
 		 }
 
 	}
-	public static void main(String[] args) {
-		AdminGUI gui = new AdminGUI(null);
-
-	}
+	
+//	public static void main(String[] args) {
+//		AdminGUI gui = new AdminGUI(null);
+//
+//	}
 }
