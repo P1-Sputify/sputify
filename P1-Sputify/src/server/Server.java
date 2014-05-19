@@ -10,7 +10,6 @@ import java.io.*;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.UnsupportedAudioFileException;
-import javax.swing.*;
 
 /**
  * @authors mehmedagica, Sebastian Aspegren
@@ -38,7 +37,7 @@ public class Server {
 		// Handles client connection-give me a thread
 		connectThread = new Thread(new Connect());
 		//serverStart();
-
+	connectThread.start();
 		
 	}
 	
@@ -83,6 +82,7 @@ public class Server {
 				adminGUI.appendText("Server socket with IP " + getIP() + " created on port " + port);
 
 				while (true) {
+					adminGUI.appendText("Waiting for clients to connect...");
 					socket = serverSocket.accept();
 //					System.out.println("Server socket accept client");
 					adminGUI.appendText("Server socket accept client");

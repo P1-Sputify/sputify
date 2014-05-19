@@ -4,13 +4,10 @@
 package server;
 
 import java.awt.BorderLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
@@ -19,12 +16,14 @@ import javax.swing.JTextField;
  * @author Nethakaaru
  * 
  */
-public class AdminGUI extends JFrame implements ActionListener {
+public class AdminGUI extends JFrame// implements ActionListener 
+{
 
 	private Server server;
 	private JTextArea txtArea = new JTextArea();
 	private JTextField IPandPort;
-	private JButton toggleServerbtn = new JButton("Server start");
+	private JButton toggleServerbtn = new JButton("Stop server");
+	private JScrollPane scrollPane= new JScrollPane(txtArea);
 	private boolean isServerOn = false;
 
 	public AdminGUI(Server server) {
@@ -32,7 +31,6 @@ public class AdminGUI extends JFrame implements ActionListener {
 		setupGUI();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);
-		toggleServerbtn.addActionListener(this);
 	}
 
 	public void setupGUI() {
@@ -40,10 +38,10 @@ public class AdminGUI extends JFrame implements ActionListener {
 		setLayout(new BorderLayout());
 		IPandPort = new JTextField("Server created on IP: "
 				+ server.getIP() + " and port: 57005");
-		add(txtArea, BorderLayout.CENTER);
+		add(scrollPane, BorderLayout.CENTER);
 		add(IPandPort, BorderLayout.NORTH);
-		add(toggleServerbtn, BorderLayout.WEST);
-		toggleServerbtn.addActionListener(this);
+//		add(toggleServerbtn, BorderLayout.WEST);
+	//	toggleServerbtn.addActionListener(this);
 		IPandPort.setEditable(false);
 		txtArea.setEditable(false);
 	}
@@ -62,32 +60,20 @@ public class AdminGUI extends JFrame implements ActionListener {
 		txtArea.setEditable(false);
 	}
 
-//	/**
-//	 * A method that edits the ip and port text field.
-//	 * 
-//	 * @param inStr
-//	 *            what the ip and port text field should say.
-//	 */
-//	public void setIPandPort(String inStr) {
-//		IPandPort.setEditable(true);
-//		IPandPort.setText(inStr);
-//		IPandPort.setEditable(false);
+
+
+//	public void actionPerformed(ActionEvent e) {
+//		 if(e.getSource()==toggleServerbtn){
+//			 if(isServerOn){
+//				 server.serverStop();
+//				 isServerOn = false;
+//				 toggleServerbtn.setText("Start server");
+//			 } else{
+//				 server.serverStart();
+//				 isServerOn = true;
+//				 toggleServerbtn.setText("Stop server");
+//		 	 }
+//		 }
 //	}
-
-
-
-	public void actionPerformed(ActionEvent e) {
-		 if(e.getSource()==toggleServerbtn){
-			 if(isServerOn){
-				 server.serverStop();
-				 isServerOn = false;
-				 toggleServerbtn.setText("Start server");
-			 } else{
-				 server.serverStart();
-				 isServerOn = true;
-				 toggleServerbtn.setText("Stop server");
-		 	 }
-		 }
-	}
-	
+//	
 }
