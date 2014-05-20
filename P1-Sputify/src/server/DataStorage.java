@@ -13,6 +13,7 @@ import java.util.Map.Entry;
  */
 public class DataStorage {
 	
+	private AdminGUI adminGUI;
 	private String filePath = ("wavfiles/");
 	public static Hashtable<Integer, Track> tracks;
 	public static TreeMap<Integer, User> users;
@@ -31,97 +32,111 @@ public class DataStorage {
      * Create data structures for audio tracks and users
      * And populate them with data from database
      */
-	public DataStorage() {
+	public DataStorage(AdminGUI adminGUI) {
+		
+		this.adminGUI = adminGUI;
+		
+		tracks = new Hashtable<Integer, Track>(100);
+		users = new TreeMap<Integer, User>();
+		
+		getTracks();	
+		getUsers();
+	}
+	
+	/**
+	 * Create result sets and get data from database 
+	 * @throws SQLException
+	 */
+	public void getTracks() {
 		
 		try {
-			
-			tracks = new Hashtable<Integer, Track>(100);
-			users = new TreeMap<Integer, User>();
-			
-			getTracks();
-			
-			getUsers();
-			
+			connect();
+			rsTracks = statement.executeQuery("SELECT * FROM " + dbName + ".track");
+			loadTracks(rsTracks);
+			disconnect();
 		} catch (SQLException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+			adminGUI.appendText(e.getMessage());
+		}		
 	}
 	
 	/**
 	 * Create result sets and get data from database 
 	 * @throws SQLException
 	 */
-	public void getTracks() throws SQLException {
+	public void getUsers() {
 		
-		connect();
+		try {
+			connect();
+			rsUsers = statement.executeQuery("SELECT * FROM " + dbName + ".user");
+			loadUsers(rsUsers);
+			disconnect();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			adminGUI.appendText(e.getMessage());
+		}		
 		
-		rsTracks = statement.executeQuery("SELECT * FROM " + dbName + ".track");
-		
-		loadTracks(rsTracks);
-		
-		disconnect();
-	}
-	
-	/**
-	 * Create result sets and get data from database 
-	 * @throws SQLException
-	 */
-	public void getUsers() throws SQLException {
-		
-		connect();
-		
-		rsUsers = statement.executeQuery("SELECT * FROM " + dbName + ".user");
-		
-		loadUsers(rsUsers);
-		
-		disconnect();
 	}
 	
 	/**
 	 * Load tracks from DB to the HashTable
 	 * @throws SQLException
 	 */
-	public void loadTracks(ResultSet rsTracks) throws SQLException {
+	public void loadTracks(ResultSet rsTracks) {
 		
 		//For test purpose only
 		//System.out.println(countRows(rsTracks));
 		
-		while(rsTracks.next()) {
-			
-			Track aTrack = new Track(
-					rsTracks.getInt("id"),
-					rsTracks.getString("trackName"),
-					rsTracks.getString("artist"),
-					rsTracks.getInt("length"),
-					rsTracks.getString("album"),
-					rsTracks.getString("location"));
-			
-			//For test purpose only
-			//System.out.println(aTrack.toString());
-			
-			addTrackToHashTable(rsTracks.getInt("id"), aTrack);
-        }
+		try {
+			while(rsTracks.next()) {
+				
+				Track aTrack = new Track(
+						rsTracks.getInt("id"),
+						rsTracks.getString("trackName"),
+						rsTracks.getString("artist"),
+						rsTracks.getInt("length"),
+						rsTracks.getString("album"),
+						rsTracks.getString("location"));
+				
+				//For test purpose only
+				//System.out.println(aTrack.toString());
+				
+				addTrackToHashTable(rsTracks.getInt("id"), aTrack);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			adminGUI.appendText(e.getMessage());
+		}
 	}
 
 	/**
 	 * Load users from DB to the MapTree
 	 * @throws SQLException
 	 */
-	public void loadUsers(ResultSet rsUsers) throws SQLException {
+	public void loadUsers(ResultSet rsUsers) {
 		
 		//For test purpose only
 		//System.out.println(countRows(rsUsers));
 		
-		while(rsUsers.next()) {
+		try {
+			while(rsUsers.next()) {
+				
+				User aUser = new User(
+						rsUsers.getInt("id"),
+						rsUsers.getString("name"),
+						rsUsers.getString("password"),
+						rsUsers.getString("screenName"));
 			
-			User aUser = new User(
-					rsUsers.getInt("id"),
-					rsUsers.getString("name"),
-					rsUsers.getString("password"),
-					rsUsers.getString("screenName"));
-		
-			addUserToMapTree(rsUsers.getInt("id"), aUser);
-        }
+				addUserToMapTree(rsUsers.getInt("id"), aUser);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			adminGUI.appendText(e.getMessage());
+		}
 	}
 	
 	/**
@@ -148,21 +163,26 @@ public class DataStorage {
 	 * @param trackData
 	 * @throws SQLException
 	 */
-	public void updateATrack(Integer trackId, Track trackData) throws SQLException {
+	public void updateATrack(Integer trackId, Track trackData) {
 		
-		connect();
-		
-		statement.executeUpdate("UPDATE " + dbName + ".track SET" +
-								" trackName = " + trackData.getName() +
-								" artist = " + trackData.getArtist() +
-								" length = " + trackData.getLength() +
-								" album = " + trackData.getAlbum() +
-								" location = " + trackData.getLocation() +
-								" WHERE id=" + trackId);
-		
-		disconnect();
-		
-		getTracks();
+		try {
+			connect();
+			statement.executeUpdate("UPDATE " + dbName + ".track SET" +
+					" trackName = " + trackData.getName() +
+					" artist = " + trackData.getArtist() +
+					" length = " + trackData.getLength() +
+					" album = " + trackData.getAlbum() +
+					" location = " + trackData.getLocation() +
+					" WHERE id=" + trackId);
+			disconnect();
+			
+			getTracks();
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			adminGUI.appendText(e.getMessage());
+		}
 	}
 	
 	/**
@@ -171,20 +191,23 @@ public class DataStorage {
 	 * @param userData
 	 * @throws SQLException
 	 */
-	public void updateAUser(Integer userId, User userData) throws SQLException {
+	public void updateAUser(Integer userId, User userData) {
 		
-		connect();
-		
-		statement.executeUpdate("UPDATE " + dbName + ".track SET" +
-								" name = " + userData.getName() +
-								" password = " + userData.getPassword() +
-								" screenName = " + userData.getScreenName() +
-								" WHERE id=" + userId);
-		
-		disconnect();
-		
-		getUsers();
-		
+		try {
+			connect();
+			statement.executeUpdate("UPDATE " + dbName + ".track SET" +
+					" name = " + userData.getName() +
+					" password = " + userData.getPassword() +
+					" screenName = " + userData.getScreenName() +
+					" WHERE id=" + userId);
+			disconnect();
+
+			getUsers();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			adminGUI.appendText(e.getMessage());
+		}		
 	}
 	
 	/**
@@ -192,16 +215,20 @@ public class DataStorage {
 	 * @param trackId
 	 * @throws SQLException
 	 */
-	public void deleteATrack(Integer trackId) throws SQLException {
+	public void deleteATrack(Integer trackId) {
 		
-		connect();
-		
-		statement.executeUpdate("DELETE FROM " + dbName + ".track" +
-								" WHERE id=" + trackId);
-		
-		disconnect();
-		
-		getTracks();
+		try {
+			connect();
+			statement.executeUpdate("DELETE FROM " + dbName + ".track" +
+					" WHERE id=" + trackId);
+			disconnect();
+
+			getTracks();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			adminGUI.appendText(e.getMessage());
+		}
 	}
 	
 	/**
@@ -209,17 +236,20 @@ public class DataStorage {
 	 * @param userId
 	 * @throws SQLException
 	 */
-	public void deleteAUser(Integer userId) throws SQLException {
+	public void deleteAUser(Integer userId) {
 		
-		connect();
-		
-		statement.executeUpdate("DELETE FROM " + dbName + ".track" +
-								" WHERE id=" + userId);
-		
-		disconnect();
-		
-		getUsers();
-		
+		try {
+			connect();
+			statement.executeUpdate("DELETE FROM " + dbName + ".track" +
+					" WHERE id=" + userId);
+			disconnect();
+
+			getUsers();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			adminGUI.appendText(e.getMessage());
+		}
 	}
 	
 	
@@ -281,19 +311,20 @@ public class DataStorage {
 		return gUser;
 	}
 	
-	public static void connect() throws SQLException {
+	public void connect() {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/dbsputify","root","Mornar22!0");
             //connection = DriverManager.getConnection("jdbc:mysql://195.178.232.7:4040/AC9574","AC9574","Sputify7");
             statement = connection.createStatement();
-        } catch(ClassNotFoundException e) {
+        } catch(ClassNotFoundException | SQLException e) {
             System.out.println("Databas-driver hittades ej: "+e);
             e.getStackTrace();
+            adminGUI.appendText(e.getMessage());
         }
     }
     
-    public static void disconnect() throws SQLException {
+    public void disconnect() throws SQLException {
         statement.close();
         connection.close();
     }

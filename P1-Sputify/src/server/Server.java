@@ -31,8 +31,8 @@ public class Server {
 	 *            the port we wish to bind the server to.
 	 */
 	public Server(int port) {
-		this.ds = new DataStorage();
 		this.adminGUI = new AdminGUI(this);
+		this.ds = new DataStorage(adminGUI);
 		this.port = port;
 	}
 		
