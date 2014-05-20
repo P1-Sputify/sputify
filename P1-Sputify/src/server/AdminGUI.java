@@ -86,6 +86,7 @@ public class AdminGUI extends JFrame implements ActionListener {
 	 */
 	public void appendText(String inStr) {
 		taServerMessage.append(inStr + "\n");
+		taServerMessage.setCaretPosition(taServerMessage.getDocument().getLength());
 	}
 
 //	/**
