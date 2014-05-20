@@ -16,6 +16,7 @@ public class AdminGUI extends JFrame implements ActionListener {
 
 	private Server server;
 	private JTextArea taServerMessage = new JTextArea();
+	private JScrollPane scrollPane = new JScrollPane(taServerMessage);
 	private JTextField IPandPort;
 	private JButton toggleServerbtn = new JButton("Server start");
 	private JButton showTracksbtn = new JButton("Show Tracks data");
@@ -58,7 +59,7 @@ public class AdminGUI extends JFrame implements ActionListener {
 		pnlMessages.add(toggleServerbtn);
 		
 		pnlServer.setLayout(new GridLayout(1, 1));
-		pnlServer.add(taServerMessage);
+		pnlServer.add(scrollPane);
 		
 		pnlDataButtons.setLayout(new GridLayout(2, 2));
 		pnlDataButtons.add(showTracksbtn);
@@ -85,9 +86,7 @@ public class AdminGUI extends JFrame implements ActionListener {
 	 *            the info we wish to add to the "console".
 	 */
 	public void appendText(String inStr) {
-		taServerMessage.setEditable(true);
 		taServerMessage.append(inStr + "\n");
-		taServerMessage.setEditable(false);
 	}
 
 //	/**
