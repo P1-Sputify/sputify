@@ -60,11 +60,11 @@ public class AdminGUI extends JFrame implements ActionListener {
 		pnlServer.setLayout(new GridLayout(1, 1));
 		pnlServer.add(scrollPane);
 		
-		pnlDataButtons.setLayout(new GridLayout(2, 2));
+		pnlDataButtons.setLayout(new GridLayout(1, 2));
 		pnlDataButtons.add(showTracksbtn);
 		pnlDataButtons.add(showUsersbtn);
-		pnlDataButtons.add(addTrackbtn);
-		pnlDataButtons.add(addUserbtn);
+		//pnlDataButtons.add(addTrackbtn);
+		//pnlDataButtons.add(addUserbtn);
 		
 		pnlData.setLayout(new GridLayout(1, 1));
 		pnlData.add(getTaData());
@@ -106,12 +106,12 @@ public class AdminGUI extends JFrame implements ActionListener {
 		 if(e.getSource()==toggleServerbtn){
 			 if(isServerOn){
 				 server.serverStop();
-				 isServerOn = false;
-				 toggleServerbtn.setText("Start server");
+				 //isServerOn = false;
+				 //toggleServerbtn.setText("Start server");
 			 } else{
 				 server.serverStart();
 				 isServerOn = true;
-				 toggleServerbtn.setText("Stop server");
+				 toggleServerbtn.setText("Stäng server");
 		 	 }
 		 }
 		 else if(e.getSource()==showTracksbtn) {

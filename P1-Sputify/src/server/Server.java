@@ -47,8 +47,9 @@ public class Server {
 		
 		connectThread.interrupt();
 		connectThread = null;
-		adminGUI.appendText("Server stopped");
-		
+		//adminGUI.appendText("Server stopped");
+		//adminGUI.dispose();
+		System.exit(1);
 	}
 
 	/**
