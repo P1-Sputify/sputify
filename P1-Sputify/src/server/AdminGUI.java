@@ -35,6 +35,10 @@ public class AdminGUI extends JFrame implements ActionListener {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);
 		toggleServerbtn.addActionListener(this);
+		showTracksbtn.addActionListener(this);
+		showUsersbtn.addActionListener(this);
+		addTrackbtn.addActionListener(this);
+		addUserbtn.addActionListener(this);
 	}
 
 	public void setupGUI() {
@@ -63,7 +67,7 @@ public class AdminGUI extends JFrame implements ActionListener {
 		pnlDataButtons.add(addUserbtn);
 		
 		pnlData.setLayout(new GridLayout(1, 1));
-		pnlData.add(taData);
+		pnlData.add(getTaData());
 		
 		add(pnlMessages);
 		add(pnlServer);
@@ -112,6 +116,26 @@ public class AdminGUI extends JFrame implements ActionListener {
 				 toggleServerbtn.setText("Stop server");
 		 	 }
 		 }
+		 else if(e.getSource()==showTracksbtn) {
+			 server.updateDataPanelWithTracks();
+		 }
+		 else if(e.getSource()==showUsersbtn) {
+			 server.updateDataPanelWithUsers();
+		 }
+	}
+
+	/**
+	 * @return the taData
+	 */
+	public JTextArea getTaData() {
+		return taData;
+	}
+
+	/**
+	 * @param taData the taData to set
+	 */
+	public void setTaData(JTextArea taData) {
+		this.taData = taData;
 	}
 	
 }

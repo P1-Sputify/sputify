@@ -4,7 +4,7 @@
 package server;
 
 import java.net.*;
-import java.util.Hashtable;
+import java.util.*;
 import java.io.*;
 
 import javax.sound.sampled.AudioInputStream;
@@ -311,6 +311,36 @@ public class Server {
 		}
 		return "UNKNOWN";
 
+	}
+	
+	public String getTracks() {
+		String strTracks = "";
+		ArrayList<Track> t = ds.getTrackValues();
+		for (int i = 0; i < t.size(); i++) {
+			strTracks = strTracks + "\n" + t.get(i).toString() + "\n";
+		}
+		return strTracks;
+	}
+	
+	public String getUsers() {
+		String strUsers = "";
+		ArrayList<User> t = ds.getUserValues();
+		for (int i = 0; i < t.size(); i++) {
+			strUsers = strUsers + "\n" + t.get(i).toString() + "\n";
+		}
+		return strUsers;
+	}
+	
+	public void updateDataPanelWithTracks() {
+		adminGUI.getTaData().setText("");
+		adminGUI.getTaData().setText(getTracks());
+		adminGUI.getTaData().setCaretPosition(0);
+	}
+	
+	public void updateDataPanelWithUsers() {
+		adminGUI.getTaData().setText("");
+		adminGUI.getTaData().setText(getUsers());
+		adminGUI.getTaData().setCaretPosition(0);
 	}
 
 	 /** The main method for the server.

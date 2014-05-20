@@ -3,13 +3,9 @@
  */
 package server;
 
-import java.io.*;
 import java.sql.*;
 import java.util.*;
-
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.UnsupportedAudioFileException;
+import java.util.Map.Entry;
 
 /**
  * @author Sebastian Aspegren
@@ -309,4 +305,36 @@ public class DataStorage {
         
         return rowCount;
     }
+	
+	/**
+	 * Get track list as ArrayList<Track>
+	 * 
+	 * @return ArrayList<Track>
+	 */
+	public ArrayList<Track> getTrackValues() {	
+		ArrayList<Track> t = new ArrayList<Track>();
+		Set<Map.Entry<Integer, Track>> eSet = tracks.entrySet();
+		
+		for(Entry<Integer, Track> etr : eSet) {
+			t.add(etr.getValue());
+		}
+		
+		return t;
+	}
+	
+	/**
+	 * Get user list as ArrayList<User>
+	 * 
+	 * @return ArrayList<User>
+	 */
+	public ArrayList<User> getUserValues() {	
+		ArrayList<User> t = new ArrayList<User>();
+		Set<Map.Entry<Integer, User>> eSet = users.entrySet();
+		
+		for(Entry<Integer, User> etr : eSet) {
+			t.add(etr.getValue());
+		}
+		
+		return t;
+	}
 }
