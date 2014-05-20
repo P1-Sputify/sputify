@@ -3,17 +3,9 @@
  */
 package server;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
 
 /**
  * A class that functions as a simple gui to see if anything goes wrong.
@@ -23,9 +15,18 @@ import javax.swing.JTextField;
 public class AdminGUI extends JFrame implements ActionListener {
 
 	private Server server;
-	private JTextArea txtArea = new JTextArea();
+	private JTextArea taServerMessage = new JTextArea();
 	private JTextField IPandPort;
 	private JButton toggleServerbtn = new JButton("Server start");
+	private JButton showTracksbtn = new JButton("Show Tracks data");
+	private JButton showUsersbtn = new JButton("Show Users data");
+	private JButton addTrackbtn = new JButton("Add Track");
+	private JButton addUserbtn = new JButton("Add User");
+	private JPanel pnlMessages = new JPanel();
+	private JPanel pnlServer = new JPanel();
+	private JPanel pnlDataButtons = new JPanel();
+	private JPanel pnlData = new JPanel();
+	private JTextArea taData = new JTextArea();
 	private boolean isServerOn = false;
 
 	public AdminGUI(Server server) {
@@ -40,16 +41,35 @@ public class AdminGUI extends JFrame implements ActionListener {
 		setLocation(NORMAL, NORMAL);
 		setSize(new Dimension(1200, 820));
 		setResizable(false);
-		setBounds(10, 10, 1000, 700);
-		setLayout(new BorderLayout());
+		setLayout(new GridLayout(4, 1));
+		
 		IPandPort = new JTextField("Server created on IP: "
 				+ server.getIP() + " and port: 57005");
 		
-		add(IPandPort, BorderLayout.NORTH);
-		add(toggleServerbtn, BorderLayout.WEST);
-		add(txtArea, BorderLayout.CENTER);
 		IPandPort.setEditable(false);
-		txtArea.setEditable(false);
+		taServerMessage.setEditable(false);
+
+		pnlMessages.setLayout(new GridLayout(1, 2));
+		pnlMessages.add(IPandPort);
+		pnlMessages.add(toggleServerbtn);
+		
+		pnlServer.setLayout(new GridLayout(1, 1));
+		pnlServer.add(taServerMessage);
+		
+		pnlDataButtons.setLayout(new GridLayout(2, 2));
+		pnlDataButtons.add(showTracksbtn);
+		pnlDataButtons.add(showUsersbtn);
+		pnlDataButtons.add(addTrackbtn);
+		pnlDataButtons.add(addUserbtn);
+		
+		pnlData.setLayout(new GridLayout(1, 1));
+		pnlData.add(taData);
+		
+		add(pnlMessages);
+		add(pnlServer);
+		add(pnlDataButtons);
+		add(pnlData);
+		
 	}
 
 	
@@ -61,9 +81,9 @@ public class AdminGUI extends JFrame implements ActionListener {
 	 *            the info we wish to add to the "console".
 	 */
 	public void appendText(String inStr) {
-		txtArea.setEditable(true);
-		txtArea.append(inStr + "\n");
-		txtArea.setEditable(false);
+		taServerMessage.setEditable(true);
+		taServerMessage.append(inStr + "\n");
+		taServerMessage.setEditable(false);
 	}
 
 //	/**
