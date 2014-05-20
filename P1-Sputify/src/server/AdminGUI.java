@@ -17,7 +17,7 @@ public class AdminGUI extends JFrame implements ActionListener {
 	private Server server;
 	private JTextArea taServerMessage = new JTextArea();
 	private JScrollPane scrollPane = new JScrollPane(taServerMessage);
-	private JTextField IPandPort;
+	private JTextField IPandPort = new JTextField();
 	private JButton toggleServerbtn = new JButton("Server start");
 	private JButton showTracksbtn = new JButton("Show Tracks data");
 	private JButton showUsersbtn = new JButton("Show Users data");
@@ -48,8 +48,7 @@ public class AdminGUI extends JFrame implements ActionListener {
 		setResizable(false);
 		setLayout(new GridLayout(4, 1));
 		
-		IPandPort = new JTextField("Server created on IP: "
-				+ server.getIP() + " and port: 57005");
+		IPandPort.setText("Server created on IP: " + server.getIP() + " and port: 57005");
 		
 		IPandPort.setEditable(false);
 		taServerMessage.setEditable(false);
