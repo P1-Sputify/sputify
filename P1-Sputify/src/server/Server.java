@@ -164,6 +164,7 @@ public class Server {
 //							System.out.println(">> Sent login failed message");
 							adminGUI.appendText(">> Sent login failed message");
 						}
+						//oos.flush();
 					} else if (recievedObject instanceof String) {
 						message = (String) recievedObject;
 						if (message.equalsIgnoreCase("send playlist")) {
