@@ -1,6 +1,3 @@
-/**
- * 
- */
 package server;
 
 import java.net.*;
@@ -14,6 +11,9 @@ import javax.swing.*;
 
 /**
  * @authors mehmedagica, Sebastian Aspegren
+ * 
+ * The class Server. Server functions as a server and a controller for the program. It handles logic 
+ * and connections with clients.
  * 
  */
 public class Server {

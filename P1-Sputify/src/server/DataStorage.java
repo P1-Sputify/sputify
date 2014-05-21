@@ -14,7 +14,6 @@ import java.util.Map.Entry;
 public class DataStorage {
 	
 	private AdminGUI adminGUI;
-	private String filePath = ("wavfiles/");
 	public static Hashtable<Integer, Track> tracks;
 	public static TreeMap<Integer, User> users;
 	
