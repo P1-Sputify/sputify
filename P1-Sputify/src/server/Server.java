@@ -19,7 +19,6 @@ import javax.swing.*;
 public class Server {
 
 	private int		port;
-	private String	state	= null;
 	private DataStorage ds;
 	private AdminGUI adminGUI;
 	private Thread connectThread;
@@ -39,16 +38,10 @@ public class Server {
 	public void serverStart() {
 		connectThread = new Thread(new Connect());
 		connectThread.start();
-		//System.out.println("Server started");
 		adminGUI.appendText("Server started");
 	}
 	
 	public void serverStop() {
-		
-		connectThread.interrupt();
-		connectThread = null;
-		//adminGUI.appendText("Server stopped");
-		//adminGUI.dispose();
 		System.exit(1);
 	}
 
@@ -69,26 +62,22 @@ public class Server {
 			Socket socket;
 			// Thread that gives output
 			Thread clientThread;
-			// Thread that receives input
-			// Thread clientListener;
+		
+			
 
 			try {
-				//InetAddress host = InetAddress.getLocalHost();
 				serverSocket = new ServerSocket(port);
-				//System.out.println("Server socket with IP " + host.getHostAddress() + " created on port " + port);
 				adminGUI.appendText("Server socket with IP " + getIP() + " created on port " + port);
 
 				while (true) {
 					socket = serverSocket.accept();
-//					System.out.println("Server socket accept client");
 					adminGUI.appendText("Server socket accept client");
 					clientThread = new Thread(new TalkToClient(socket));
 					clientThread.start();
-//					System.out.println("A new client thread created and started");
+
 					adminGUI.appendText("A new client thread created and started");
 				}
 			} catch (IOException e1) {
-//				System.out.println(e1);
 				adminGUI.appendText(e1.getMessage());
 			}
 
@@ -126,17 +115,13 @@ public class Server {
 
 			try {
 				// Have to use it to send data to the client
-//				System.out.println(">> Creating Object Output Stream");
 				adminGUI.appendText(">> Creating Object Output Stream");
 				ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
-//				System.out.println(">> Object Output Stream created");
 				adminGUI.appendText(">> Object Output Stream created");
 
 				// Have to use it to receive data from the client
-//				System.out.println(">> Creating Object Input Stream");
 				adminGUI.appendText(">> Creating Object Input Stream");
 				ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
-//				System.out.println(">> Object input stream created");
 				adminGUI.appendText(">> Object input stream created");
 
 				Object recievedObject;
@@ -150,34 +135,28 @@ public class Server {
 
 					if (recievedObject instanceof String[]) {
 						loginArray = (String[]) recievedObject;
-//						System.out.println("<< User login received: " + loginArray[0] + " " + loginArray[1]);
 						adminGUI.appendText("<< User login received: " + loginArray[0] + " " + loginArray[1]);
 						if (DataStorage.verifyUser(loginArray[0], loginArray[1])) {
 							loggedIn = true;
 							oos.writeObject("login success");
-//							System.out.println(">> Sent login success message");
 							adminGUI.appendText(">> Sent login success message");
 						} else {
 							loggedIn = false;
 							loginArray = null;
 							oos.writeObject("login failed");
-//							System.out.println(">> Sent login failed message");
 							adminGUI.appendText(">> Sent login failed message");
 						}
-						//oos.flush();
+						
 					} else if (recievedObject instanceof String) {
 						message = (String) recievedObject;
 						if (message.equalsIgnoreCase("send playlist")) {
 							if (loggedIn) {
 								Hashtable<Integer, Track> songList = DataStorage.tracks;
-//								System.out.println(">> Create Track list and send it to the client as Hash Table");
 								adminGUI.appendText(">> Create Track list and send it to the client as Hash Table");
 								oos.writeObject(songList);
 								oos.flush();
-//								System.out.println(">> Track list sent to the client");
 								adminGUI.appendText(">> Track list sent to the client");
 							} else {
-//								System.out.println(">> ERROR! Incorrect login name and/or password");
 								adminGUI.appendText(">> ERROR! Incorrect login name and/or password");
 								oos.writeObject("not logged in");
 							}
@@ -186,36 +165,30 @@ public class Server {
 							loginArray = null;
 							oos.writeObject("logged out");
 						} else {
-//							System.out.println(message);
 							adminGUI.appendText(message);
 						}
 					} else if (recievedObject instanceof Integer) {
 						Integer trackId = (Integer) recievedObject;
-//						System.out.println("<< Track ID received");
 						adminGUI.appendText("<< Track ID received");
 
 						if (trackId > 0) {
 							// Send the audio file to the client
 							oos.writeObject(loadAudioFile(DataStorage.getTrack(trackId).getLocation()));
 							oos.flush();
-//							System.out.println("File sent to the client");
 							adminGUI.appendText("File sent to the client");
 						}
 					}
 				}
 			} catch (Exception e) {
 				if(e.getClass().getName().contains("SocketException"))
-//					System.out.println(">>The client reseted connection or client socket fails of some reason.");
 				adminGUI.appendText(">>The client reseted connection or client socket fails of some reason.");
 				else
-					e.printStackTrace();
 				adminGUI.appendText(e.getMessage());
 			}
 
 			try {
 				socket.close();
 			} catch (IOException e) {
-				e.printStackTrace();
 				adminGUI.appendText(e.getMessage());
 			}
 		}
@@ -228,7 +201,6 @@ public class Server {
 	 */
 	public static byte[] loadAudioFile(String fileName) {
 		
-		int totalFramesRead = 0;
 		File fileIn = new File(fileName);
 		byte[] audioBytes = null;
 		// somePathName is a pre-existing string whose value was
@@ -251,13 +223,13 @@ public class Server {
 		    while ((numBytesRead = audioInputStream.read(audioBytes)) != -1) {
 		      // Calculate the number of frames actually read.
 		      numFramesRead = numBytesRead / bytesPerFrame;
-		      totalFramesRead += numFramesRead;
 		      // Here, do something useful with the audio data that's 
 		      // now in the audioBytes array...
 		    } 
 		  
 		  } catch (IOException e) {
 			  e.printStackTrace();
+			  
 		  }
 			
 		} catch (IOException | UnsupportedAudioFileException e) {

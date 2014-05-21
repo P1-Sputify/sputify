@@ -75,10 +75,7 @@ public class Track implements Serializable {
 		return location;
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
+	
 	public String toString() {
 		return "Track [id=" + id + ", name=" + name + ", artist=" + artist + ", length=" + length + ", album=" + album  + ", location=" + location + "]";
 	}

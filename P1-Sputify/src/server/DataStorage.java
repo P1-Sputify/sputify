@@ -50,14 +50,14 @@ public class DataStorage {
 	public void getTracks() {
 		
 		try {
+			adminGUI.appendText("Connecting to database, please wait...");
 			connect();
 			rsTracks = statement.executeQuery("SELECT * FROM " + dbName + ".track");
 			loadTracks(rsTracks);
 			disconnect();
+			adminGUI.appendText("Connected to database");
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			adminGUI.appendText(e.getMessage());
+			adminGUI.appendText( e.getMessage());
 		}		
 	}
 	
@@ -73,8 +73,6 @@ public class DataStorage {
 			loadUsers(rsUsers);
 			disconnect();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 			adminGUI.appendText(e.getMessage());
 		}		
 		
@@ -85,9 +83,6 @@ public class DataStorage {
 	 * @throws SQLException
 	 */
 	public void loadTracks(ResultSet rsTracks) {
-		
-		//For test purpose only
-		//System.out.println(countRows(rsTracks));
 		
 		try {
 			while(rsTracks.next()) {
@@ -100,14 +95,9 @@ public class DataStorage {
 						rsTracks.getString("album"),
 						rsTracks.getString("location"));
 				
-				//For test purpose only
-				//System.out.println(aTrack.toString());
-				
 				addTrackToHashTable(rsTracks.getInt("id"), aTrack);
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 			adminGUI.appendText(e.getMessage());
 		}
 	}
@@ -117,9 +107,6 @@ public class DataStorage {
 	 * @throws SQLException
 	 */
 	public void loadUsers(ResultSet rsUsers) {
-		
-		//For test purpose only
-		//System.out.println(countRows(rsUsers));
 		
 		try {
 			while(rsUsers.next()) {
@@ -133,8 +120,6 @@ public class DataStorage {
 				addUserToMapTree(rsUsers.getInt("id"), aUser);
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 			adminGUI.appendText(e.getMessage());
 		}
 	}
@@ -179,8 +164,6 @@ public class DataStorage {
 			getTracks();
 			
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 			adminGUI.appendText(e.getMessage());
 		}
 	}
@@ -204,8 +187,6 @@ public class DataStorage {
 
 			getUsers();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 			adminGUI.appendText(e.getMessage());
 		}		
 	}
@@ -225,8 +206,6 @@ public class DataStorage {
 
 			getTracks();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 			adminGUI.appendText(e.getMessage());
 		}
 	}
@@ -246,8 +225,6 @@ public class DataStorage {
 
 			getUsers();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 			adminGUI.appendText(e.getMessage());
 		}
 	}
@@ -273,13 +250,7 @@ public class DataStorage {
         		return true;
         }
          
-//        for(Map.Entry<String, User> entry : users.entrySet()) {
-//        	if(entry.getValue().getName()==userName && entry.getValue().getPassword()==password)
-//        		return true;
-//        }
-        
 		return false;
-		//return true;
 	}
 
 	/**

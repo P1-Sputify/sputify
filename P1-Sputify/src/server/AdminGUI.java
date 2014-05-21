@@ -21,8 +21,6 @@ public class AdminGUI extends JFrame implements ActionListener {
 	private JButton toggleServerbtn = new JButton("Server start");
 	private JButton showTracksbtn = new JButton("Show Tracks data");
 	private JButton showUsersbtn = new JButton("Show Users data");
-	private JButton addTrackbtn = new JButton("Add Track");
-	private JButton addUserbtn = new JButton("Add User");
 	private JPanel pnlMessages = new JPanel();
 	private JPanel pnlServer = new JPanel();
 	private JPanel pnlDataButtons = new JPanel();
@@ -38,8 +36,6 @@ public class AdminGUI extends JFrame implements ActionListener {
 		toggleServerbtn.addActionListener(this);
 		showTracksbtn.addActionListener(this);
 		showUsersbtn.addActionListener(this);
-		addTrackbtn.addActionListener(this);
-		addUserbtn.addActionListener(this);
 	}
 
 	public void setupGUI() {
@@ -63,8 +59,6 @@ public class AdminGUI extends JFrame implements ActionListener {
 		pnlDataButtons.setLayout(new GridLayout(1, 2));
 		pnlDataButtons.add(showTracksbtn);
 		pnlDataButtons.add(showUsersbtn);
-		//pnlDataButtons.add(addTrackbtn);
-		//pnlDataButtons.add(addUserbtn);
 		
 		pnlData.setLayout(new GridLayout(1, 1));
 		pnlData.add(getTaData());
@@ -75,7 +69,6 @@ public class AdminGUI extends JFrame implements ActionListener {
 		add(pnlData);
 		
 	}
-
 	
 
 	/**
@@ -89,26 +82,10 @@ public class AdminGUI extends JFrame implements ActionListener {
 		taServerMessage.setCaretPosition(taServerMessage.getDocument().getLength());
 	}
 
-//	/**
-//	 * A method that edits the ip and port text field.
-//	 * 
-//	 * @param inStr
-//	 *            what the ip and port text field should say.
-//	 */
-//	public void setIPandPort(String inStr) {
-//		IPandPort.setEditable(true);
-//		IPandPort.setText(inStr);
-//		IPandPort.setEditable(false);
-//	}
-
-
-
 	public void actionPerformed(ActionEvent e) {
 		 if(e.getSource()==toggleServerbtn){
 			 if(isServerOn){
 				 server.serverStop();
-				 //isServerOn = false;
-				 //toggleServerbtn.setText("Start server");
 			 } else{
 				 server.serverStart();
 				 isServerOn = true;
