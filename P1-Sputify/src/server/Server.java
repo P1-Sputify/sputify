@@ -55,7 +55,6 @@ public class Server {
 		public void run() {
 			ServerSocket serverSocket = null;
 			Socket socket;
-			// Thread that gives output
 			Thread clientThread;
 		
 			
@@ -168,7 +167,6 @@ public class Server {
 
 						if (trackId > 0) {
 							// Send the audio file to the client
-//							oos.writeObject(loadAudioFile(DataStorage.getTrack(trackId).getLocation()));
 							oos.writeObject(loadwavfile(DataStorage.getTrack(trackId).getLocation()));
 							oos.flush();
 							adminGUI.appendText("File sent to the client");
@@ -198,79 +196,24 @@ public class Server {
  		File file= new File(inFile);
  		try {
  			DataInputStream DIS= new DataInputStream(new FileInputStream(file));
- 			//short test=0;
  			byte[] test= new byte[DIS.available()];
  		int counter=0;
  		//while there is more to read from the inputStream
  			while(DIS.available()>1){
- 			//	test=DIS.readShort();
  				test[counter]=DIS.readByte();
  				counter++;
- 		//		if(test<0)
- 		//			test=-test;	
- //print out the byte and a ","
- 	//			System.out.print(test + ", ");
- 					
  				}
- 			//print out the amount of bytes printed out.
- 	//		System.out.print(counter);
- 		
  			DIS.close();
  				return test;
  		}catch(Exception e){
  	
  		}
+ 		//If the file couldn't be read return null.
 		return null;
 	
 	
 	}
-	
-//	/**
-//	 * Read in audio file
-//	 * @param fileName
-//	 */
-//	public static byte[] loadAudioFile(String fileName) {
-//		
-//		File fileIn = new File(fileName);
-//		byte[] audioBytes = null;
-//		// somePathName is a pre-existing string whose value was
-//		// based on a user selection.
-//		try {
-//		  AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(fileIn);
-//		  int bytesPerFrame = audioInputStream.getFormat().getFrameSize();
-//		    if (bytesPerFrame == AudioSystem.NOT_SPECIFIED) {
-//		    // some audio formats may have unspecified frame size
-//		    // in that case we may read any amount of bytes
-//		    bytesPerFrame = 1;
-//		  } 
-//		  // Set an arbitrary buffer size of 1024 frames.
-//		  int numBytes = 1024 * bytesPerFrame; 
-//		  audioBytes = new byte[numBytes];
-//		  try {
-//		    int numBytesRead = 0;
-//		    int numFramesRead = 0;
-//		    // Try to read numBytes bytes from the file.
-//		    while ((numBytesRead = audioInputStream.read(audioBytes)) != -1) {
-//		      // Calculate the number of frames actually read.
-//		      numFramesRead = numBytesRead / bytesPerFrame;
-//		      // Here, do something useful with the audio data that's 
-//		      // now in the audioBytes array...
-//		    } 
-//		  
-//		  } catch (IOException e) {
-//			  e.printStackTrace();
-//			  
-//		  }
-//			
-//		} catch (IOException | UnsupportedAudioFileException e) {
-//			e.printStackTrace();
-//		}
-//		 return audioBytes;
-//		
-//	}
-//	
-
-	
+		
 	/**
 	 * A method that returns the ip of the server.
 	 * 

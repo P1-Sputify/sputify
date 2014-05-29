@@ -62,6 +62,8 @@ public class User {
 	public String getScreenName() {
 		return screenName;
 	}
+	
+
 	/**
 	 * The toString method.
 	 * @return returns a string with information about the user.
@@ -70,5 +72,4 @@ public class User {
 		return "User [id=" + id + ", name=" + name + ", password=" + password
 				+ ", screenName=" + screenName + "]";
 	}
-	
 }
