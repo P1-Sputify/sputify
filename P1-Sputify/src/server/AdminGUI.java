@@ -40,9 +40,7 @@ public class AdminGUI extends JFrame implements ActionListener {
 		setupGUI();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);
-		toggleServerbtn.addActionListener(this);
-		showTracksbtn.addActionListener(this);
-		showUsersbtn.addActionListener(this);
+
 	}
 /**
  * A method used in the constructor. It sets up everything regarding the gui. 
@@ -77,6 +75,10 @@ public class AdminGUI extends JFrame implements ActionListener {
 		add(pnlServer);
 		add(pnlDataButtons);
 		add(pnlData);
+		
+		toggleServerbtn.addActionListener(this);
+		showTracksbtn.addActionListener(this);
+		showUsersbtn.addActionListener(this);
 		
 	}
 	

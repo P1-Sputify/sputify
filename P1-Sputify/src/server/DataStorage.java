@@ -24,7 +24,6 @@ public class DataStorage {
     ResultSet rsUsers;
     
     String dbName = "ac9574";
-    //String dbName = "dbsputify";
 	
     /**
      * Constructor
@@ -196,7 +195,6 @@ public class DataStorage {
 	public void connect() {
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            //connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/dbsputify","root","Mornar22!0");
             connection = DriverManager.getConnection("jdbc:mysql://195.178.232.7:4040/AC9574","AC9574","Sputify7");
             statement = connection.createStatement();
         } catch(ClassNotFoundException | SQLException e) {
